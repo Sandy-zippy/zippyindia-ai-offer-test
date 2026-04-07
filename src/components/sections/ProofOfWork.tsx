@@ -16,7 +16,7 @@ export default function ProofOfWork() {
           <p className="font-mono text-xs uppercase tracking-widest text-[#B8CF2E] mb-4">
             Proof of Work
           </p>
-          <h2 className="font-bold text-3xl md:text-4xl text-[#1A1A2E] mb-12">
+          <h2 className="font-bold text-3xl md:text-4xl text-[#0A0A0F] mb-12">
             Results From the Last 6 Months
           </h2>
         </ScrollReveal>
@@ -33,7 +33,7 @@ export default function ProofOfWork() {
                   className="font-mono font-bold text-3xl md:text-4xl text-[#B8CF2E]"
                   duration={2}
                 />
-                <p className="font-sans text-sm text-[#4A5568] mt-3">{stat.label}</p>
+                <p className="font-sans text-sm text-[#1F2937] mt-3">{stat.label}</p>
               </div>
             </ScrollReveal>
           ))}

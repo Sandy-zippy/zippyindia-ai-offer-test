@@ -68,7 +68,7 @@ export default function WhoIsThisFor() {
           <p className="text-center font-mono text-xs uppercase tracking-widest mb-4 text-[#B8CF2E]">
             IS THIS FOR YOU?
           </p>
-          <h2 className="mx-auto mb-4 max-w-xl text-center text-3xl font-bold text-[#111827] sm:text-4xl">
+          <h2 className="mx-auto mb-4 max-w-xl text-center text-3xl font-bold text-[#0A0A0F] sm:text-4xl">
             Tap Everything That Sounds Like You
           </h2>
           <p className="mx-auto mb-12 max-w-md text-center text-sm text-[#6B7280]">
@@ -94,7 +94,7 @@ export default function WhoIsThisFor() {
                     {card.icon}
                   </span>
                   <div className="flex-1">
-                    <p className={`text-base font-medium ${active ? 'text-[#111827]' : 'text-[#111827]'}`}>
+                    <p className={`text-base font-medium ${active ? 'text-[#0A0A0F]' : 'text-[#0A0A0F]'}`}>
                       {card.text}
                     </p>
                     {active && (
@@ -133,10 +133,10 @@ export default function WhoIsThisFor() {
               className="text-center mt-10"
             >
               <div className="inline-block bg-[#B8CF2E]/10 border-2 border-[#B8CF2E] rounded-2xl px-8 py-6">
-                <p className="font-bold text-lg text-[#111827] mb-1">
+                <p className="font-bold text-lg text-[#0A0A0F] mb-1">
                   You qualify. {selected.size}/4 matched.
                 </p>
-                <p className="text-sm text-[#4B5563] mb-4">
+                <p className="text-sm text-[#1F2937] mb-4">
                   We built ZippyScale for businesses exactly like yours.
                 </p>
                 <a

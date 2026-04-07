@@ -46,7 +46,7 @@ export default function HowItWorks() {
           <p className="text-center font-mono text-xs uppercase tracking-widest mb-4 text-[#B8CF2E]">
             THE PROCESS
           </p>
-          <h2 className="mx-auto mb-12 max-w-xl text-center text-3xl font-bold text-[#1A1A2E] sm:text-4xl">
+          <h2 className="mx-auto mb-12 max-w-xl text-center text-3xl font-bold text-[#0A0A0F] sm:text-4xl">
             Live in 2 Weeks, Not 2 Quarters
           </h2>
         </ScrollReveal>
@@ -67,10 +67,10 @@ export default function HowItWorks() {
                 <div className="mb-4">
                   {stepIcons[i]}
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-[#1A1A2E]">
+                <h3 className="mb-2 text-lg font-semibold text-[#0A0A0F]">
                   {step.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-[#4A5568]">
+                <p className="text-sm leading-relaxed text-[#1F2937]">
                   {step.desc}
                 </p>
               </div>

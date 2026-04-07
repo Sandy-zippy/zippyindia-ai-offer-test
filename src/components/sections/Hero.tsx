@@ -91,7 +91,7 @@ export default function Hero() {
         <motion.h1
           variants={fadeUp}
           transition={{ duration: 0.5 }}
-          className="mt-8 text-5xl md:text-7xl font-bold max-w-4xl mx-auto leading-[1.1] text-[#1A1A2E]"
+          className="mt-8 text-5xl md:text-7xl font-bold max-w-4xl mx-auto leading-[1.1] text-[#0A0A0F]"
           style={{ fontFamily: "'Space Grotesk', sans-serif" }}
         >
           {main}
@@ -101,7 +101,7 @@ export default function Hero() {
         <motion.p
           variants={fadeUp}
           transition={{ duration: 0.5 }}
-          className="mt-6 text-lg md:text-xl text-[#4A5568] max-w-2xl mx-auto"
+          className="mt-6 text-lg md:text-xl text-[#1F2937] max-w-2xl mx-auto"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           {sub}
@@ -116,7 +116,7 @@ export default function Hero() {
           {stats.map((stat, i) => (
             <div key={i} className="flex items-baseline gap-1.5">
               {stat.label && (
-                <span className="text-sm text-[#4A5568]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <span className="text-sm text-[#1F2937]" style={{ fontFamily: "'Inter', sans-serif" }}>
                   {stat.label}
                 </span>
               )}
@@ -148,7 +148,7 @@ export default function Hero() {
         <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mt-4">
           <button
             onClick={scrollToQuiz}
-            className="text-sm text-[#4A5568] hover:underline hover:text-[#B8CF2E] transition-colors cursor-pointer bg-transparent border-none"
+            className="text-sm text-[#1F2937] hover:underline hover:text-[#B8CF2E] transition-colors cursor-pointer bg-transparent border-none"
           >
             Only 10 businesses selected this quarter. Zero cost. Zero obligation.
           </button>

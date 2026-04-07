@@ -114,10 +114,10 @@ export default function PainSection() {
             <p className="font-mono text-xs uppercase tracking-widest text-[#B8CF2E] mb-4">
               The Real Cost
             </p>
-            <h2 className="font-bold text-3xl md:text-4xl text-[#111827] mb-4">
+            <h2 className="font-bold text-3xl md:text-4xl text-[#0A0A0F] mb-4">
               Tap Every Problem You Recognise
             </h2>
-            <p className="font-sans text-base text-[#4B5563] max-w-xl mx-auto">
+            <p className="font-sans text-base text-[#1F2937] max-w-xl mx-auto">
               We'll show you what it's actually costing you.
             </p>
           </div>
@@ -141,7 +141,7 @@ export default function PainSection() {
                     <span className={`flex-shrink-0 transition-colors ${active ? 'text-[#EF4444]' : 'text-[#9CA3AF]'}`}>
                       {pain.icon}
                     </span>
-                    <span className={`font-semibold text-base ${active ? 'text-[#991B1B]' : 'text-[#111827]'}`}>
+                    <span className={`font-semibold text-base ${active ? 'text-[#991B1B]' : 'text-[#0A0A0F]'}`}>
                       {pain.title}
                     </span>
                   </div>
@@ -153,7 +153,7 @@ export default function PainSection() {
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <p className="text-sm text-[#4B5563] mb-2">{pain.detail}</p>
+                        <p className="text-sm text-[#1F2937] mb-2">{pain.detail}</p>
                         <p className="font-mono font-bold text-[#EF4444] text-lg">{pain.costLabel}</p>
                       </motion.div>
                     )}

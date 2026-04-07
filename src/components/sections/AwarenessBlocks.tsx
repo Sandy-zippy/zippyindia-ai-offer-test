@@ -63,10 +63,10 @@ export default function AwarenessBlocks() {
         <p className="font-mono text-xs uppercase tracking-widest text-[#B8CF2E] mb-4">
           START HERE
         </p>
-        <h2 className="font-bold text-2xl md:text-3xl text-[#1A1A2E] mb-2">
+        <h2 className="font-bold text-2xl md:text-3xl text-[#0A0A0F] mb-2">
           Where Are You Right Now?
         </h2>
-        <p className="text-base text-[#4A5568] mb-10">
+        <p className="text-base text-[#1F2937] mb-10">
           Pick what sounds like you. We'll take it from there.
         </p>
 
@@ -84,8 +84,8 @@ export default function AwarenessBlocks() {
               className="bg-white border border-[#E5E7EB] rounded-2xl p-6 cursor-pointer hover:shadow-lg transition-shadow text-left"
             >
               <span className="text-3xl mb-3 block">{block.emoji}</span>
-              <span className="text-[#1A1A2E] font-semibold text-base block">{block.label}</span>
-              <span className="text-[#4A5568] text-sm block mt-1">{block.sublabel}</span>
+              <span className="text-[#0A0A0F] font-semibold text-base block">{block.label}</span>
+              <span className="text-[#1F2937] text-sm block mt-1">{block.sublabel}</span>
             </motion.button>
           ))}
         </div>

@@ -55,7 +55,7 @@ export default function FAQ() {
           <p className="text-center font-mono text-xs uppercase tracking-widest mb-4 text-[#B8CF2E]">
             COMMON QUESTIONS
           </p>
-          <h2 className="mx-auto mb-12 max-w-xl text-center text-3xl font-bold text-[#111827] sm:text-4xl">
+          <h2 className="mx-auto mb-12 max-w-xl text-center text-3xl font-bold text-[#0A0A0F] sm:text-4xl">
             Before You Decide
           </h2>
         </ScrollReveal>
@@ -67,7 +67,7 @@ export default function FAQ() {
                 <button
                   onClick={() => toggle(i)}
                   aria-expanded={openIndex === i}
-                  className="flex w-full items-center justify-between p-6 text-left font-semibold text-[#111827]"
+                  className="flex w-full items-center justify-between p-6 text-left font-semibold text-[#0A0A0F]"
                 >
                   <span>{faq.q}</span>
                   <motion.span
@@ -86,7 +86,7 @@ export default function FAQ() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.25, ease: 'easeInOut' }}
                     >
-                      <p className="px-6 pb-6 text-sm leading-relaxed text-[#4B5563]">
+                      <p className="px-6 pb-6 text-sm leading-relaxed text-[#1F2937]">
                         {faq.a}
                       </p>
                     </motion.div>

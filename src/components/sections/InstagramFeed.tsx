@@ -106,10 +106,10 @@ export default function InstagramFeed() {
           <p className="text-center font-mono text-xs uppercase tracking-widest text-[#B8CF2E] mb-4">
             Follow the Journey
           </p>
-          <h2 className="font-[Space_Grotesk] text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-4 text-center">
+          <h2 className="font-[Space_Grotesk] text-3xl md:text-4xl font-bold text-[#0A0A0F] mb-4 text-center">
             Real Work. Real Team. Real Results.
           </h2>
-          <p className="text-[#4A5568] mb-12 text-sm text-center">
+          <p className="text-[#1F2937] mb-12 text-sm text-center">
             See what we're building on Instagram{' '}
             <a
               href="https://instagram.com/zippy.scale"
