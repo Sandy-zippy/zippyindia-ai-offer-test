@@ -55,23 +55,18 @@ function AutomationHome() {
         <Divider />
         <PainSection />
         <MidPageCTA />
-        <Divider />
         <ProofOfWork />
-        <Divider />
-        <AutomationGrid />
-        <MidPageCTA />
-        <Divider />
-        <ROICalculator />
         <Divider />
         <HowItWorks />
         <MidPageCTA />
-        <Divider />
+        <AutomationGrid />
+        <ROICalculator />
+        <MidPageCTA />
         <WhoIsThisFor />
         <Divider />
         <InstagramFeed />
         <Divider />
         <FAQ />
-        <Divider />
         <QuizForm />
         <FinalCTA />
       </main>

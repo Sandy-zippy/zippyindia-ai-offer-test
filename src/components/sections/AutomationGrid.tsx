@@ -119,11 +119,11 @@ function FlipCard({ card, index }: { card: typeof cards[number]; index: number }
           >
             {/* Front */}
             <div
-              className="absolute inset-0 rounded-2xl border border-[#E5E7EB] bg-white shadow-sm p-7 flex flex-col hover:border-[#B8CF2E] hover:shadow-md transition-all"
+              className="absolute inset-0 rounded-2xl border border-[#3E3E48] bg-[#33333F] shadow-sm p-7 flex flex-col hover:border-[rgba(213,235,75,0.2)] hover:shadow-lg hover:shadow-[rgba(213,235,75,0.05)] transition-all"
               style={{ backfaceVisibility: 'hidden' }}
             >
               <span className="mb-3 block">{card.icon}</span>
-              <h3 className="mb-2 text-base font-semibold text-[#B8CF2E]">{card.title}</h3>
+              <h3 className="mb-2 text-base font-semibold text-[#D5EB4B]">{card.title}</h3>
               <p className="text-sm leading-relaxed text-[#EF4444]/70 mb-3">{card.before}</p>
               <p className="text-xs text-[#6B7280] mt-auto">Tap to see the fix</p>
             </div>
@@ -134,7 +134,7 @@ function FlipCard({ card, index }: { card: typeof cards[number]; index: number }
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
               <span className="mb-3 block">{card.icon}</span>
-              <h3 className="mb-2 text-base font-semibold text-[#B8CF2E]">{card.title}</h3>
+              <h3 className="mb-2 text-base font-semibold text-[#D5EB4B]">{card.title}</h3>
               <p className="text-sm leading-relaxed text-[#22C55E] mb-3">{card.after}</p>
               <p className="text-xs text-[#6B7280] mt-auto">Tap to flip back</p>
             </div>
@@ -147,16 +147,16 @@ function FlipCard({ card, index }: { card: typeof cards[number]; index: number }
 
 export default function AutomationGrid() {
   return (
-    <section id="automation-grid" className="bg-[#FFFDF7] py-20 px-4">
+    <section id="automation-grid" className="bg-[#2A2A35] py-20 px-4">
       <div className="mx-auto max-w-6xl">
         <ScrollReveal>
           <p className="text-center font-mono text-xs uppercase tracking-widest mb-4 text-[#D5EB4B]">
             BEFORE → AFTER
           </p>
-          <h2 className="mx-auto mb-4 max-w-2xl text-center text-3xl font-bold text-[#1A1A2E] sm:text-4xl">
+          <h2 className="mx-auto mb-4 max-w-2xl text-center text-3xl font-bold text-white sm:text-4xl">
             Tap Any Card to See What Changes
           </h2>
-          <p className="text-center text-sm text-[#6B7280] mb-12">
+          <p className="text-center text-sm text-[#9CA3AF] mb-12">
             8 things your team does manually. 8 things AI handles instantly.
           </p>
         </ScrollReveal>

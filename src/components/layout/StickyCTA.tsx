@@ -8,7 +8,7 @@ export default function StickyCTA({ isQuizVisible }: StickyCTAProps) {
   if (isQuizVisible) return null
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[rgba(255,253,247,0.95)] backdrop-blur-xl border-t border-[#E5E7EB] p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[rgba(20,20,24,0.95)] backdrop-blur-xl border-t border-[#2E2E36] p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
       <a
         href="#quiz"
         onClick={() => trackCTAClick('sticky-cta', 'Get Your Free Audit')}
