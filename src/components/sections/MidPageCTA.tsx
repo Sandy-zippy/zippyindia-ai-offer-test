@@ -2,9 +2,9 @@ import { trackCTAClick } from '../../lib/tracking'
 
 export default function MidPageCTA() {
   return (
-    <div className="bg-[#2A2A35] py-10 px-4">
+    <div className="bg-[#FFFDF7] py-10 px-4">
       <div className="max-w-2xl mx-auto text-center">
-        <p className="text-white font-semibold text-lg mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+        <p className="text-[#1A1A2E] font-semibold text-lg mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
           Ready to see what you can automate?
         </p>
         <a

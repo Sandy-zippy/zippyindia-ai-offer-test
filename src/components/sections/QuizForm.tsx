@@ -94,7 +94,7 @@ function ProgressBar({ step }: { step: number }) {
         <div
           key={s}
           className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
-            s <= step ? 'bg-[#D5EB4B]' : 'bg-[#3E3E48]'
+            s <= step ? 'bg-[#D5EB4B]' : 'bg-[#E5E7EB]'
           }`}
         />
       ))}
@@ -116,10 +116,10 @@ function Step1Tasks({
 }) {
   return (
     <div>
-      <h3 className="text-lg font-semibold text-white mb-1">
+      <h3 className="text-lg font-semibold text-[#1A1A2E] mb-1">
         Which tasks eat the most time?
       </h3>
-      <p className="text-sm text-[#9CA3AF] mb-6">Pick all that apply. No wrong answers.</p>
+      <p className="text-sm text-[#6B7280] mb-6">Pick all that apply. No wrong answers.</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {automationOptions.map((opt) => {
           const active = selected.includes(opt)
@@ -130,13 +130,13 @@ function Step1Tasks({
               onClick={() => onToggle(opt)}
               className={`flex items-start gap-3 text-left rounded-xl p-4 border cursor-pointer transition-all duration-200 ${
                 active
-                  ? 'border-[#D5EB4B] bg-[rgba(213,235,75,0.05)]'
-                  : 'border-[#3E3E48] bg-[#33333F] hover:border-[#3E3E46]'
+                  ? 'border-[#B8CF2E] bg-[rgba(213,235,75,0.05)]'
+                  : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
               }`}
             >
               <span
                 className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-                  active ? 'border-[#D5EB4B] bg-[#D5EB4B]' : 'border-[#4E4E56]'
+                  active ? 'border-[#D5EB4B] bg-[#D5EB4B]' : 'border-[#D1D5DB]'
                 }`}
               >
                 {active && (
@@ -145,7 +145,7 @@ function Step1Tasks({
                   </svg>
                 )}
               </span>
-              <span className="text-sm text-white">{opt}</span>
+              <span className="text-sm text-[#1A1A2E]">{opt}</span>
             </button>
           )
         })}
@@ -161,7 +161,7 @@ function Step1Tasks({
             value={othersText}
             onChange={(e) => onOthersChange(e.target.value)}
             placeholder="Describe what you want to automate..."
-            className="w-full bg-[#33333F] border border-[#3E3E48] rounded-lg p-4 text-white text-sm placeholder:text-[#6B7280] focus:border-[#D5EB4B] focus:ring-1 focus:ring-[#D5EB4B] outline-none transition-colors"
+            className="w-full bg-white border border-[#E5E7EB] rounded-lg p-4 text-[#1A1A2E] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors"
           />
         </motion.div>
       )}
@@ -179,10 +179,10 @@ function Step2Team({
 }) {
   return (
     <div>
-      <h3 className="text-lg font-semibold text-white mb-1">
+      <h3 className="text-lg font-semibold text-[#1A1A2E] mb-1">
         How big is the team doing this work?
       </h3>
-      <p className="text-sm text-[#9CA3AF] mb-6">Tap one to continue</p>
+      <p className="text-sm text-[#6B7280] mb-6">Tap one to continue</p>
       <div className="flex flex-col gap-3">
         {teamSizeOptions.map((opt) => {
           const active = teamSize === opt.label
@@ -193,19 +193,19 @@ function Step2Team({
               onClick={() => onSelect(opt.label)}
               className={`flex items-center gap-4 text-left rounded-xl p-5 border cursor-pointer transition-all duration-200 ${
                 active
-                  ? 'border-[#D5EB4B] bg-[rgba(213,235,75,0.05)]'
-                  : 'border-[#3E3E48] bg-[#33333F] hover:border-[#3E3E46]'
+                  ? 'border-[#B8CF2E] bg-[rgba(213,235,75,0.05)]'
+                  : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
               }`}
             >
               <span
                 className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
-                  active ? 'border-[#D5EB4B]' : 'border-[#4E4E56]'
+                  active ? 'border-[#D5EB4B]' : 'border-[#D1D5DB]'
                 }`}
               >
                 {active && <span className="w-2.5 h-2.5 rounded-full bg-[#D5EB4B]" />}
               </span>
               <div>
-                <span className="text-sm font-medium text-white">{opt.label}</span>
+                <span className="text-sm font-medium text-[#1A1A2E]">{opt.label}</span>
                 <span className="block text-xs text-[#6B7280] mt-0.5">{opt.sub}</span>
               </div>
             </button>
@@ -230,15 +230,15 @@ function Step3Business({
 }) {
   return (
     <div>
-      <h3 className="text-lg font-semibold text-white mb-1">
+      <h3 className="text-lg font-semibold text-[#1A1A2E] mb-1">
         Tell us about your business
       </h3>
-      <p className="text-sm text-[#9CA3AF] mb-6">Helps us tailor your audit.</p>
+      <p className="text-sm text-[#6B7280] mb-6">Helps us tailor your audit.</p>
 
       <div className="flex flex-col gap-6">
         {/* Industry — tappable card grid */}
         <div>
-          <label className="block text-sm text-[#9CA3AF] mb-3">What's your industry?</label>
+          <label className="block text-sm text-[#6B7280] mb-3">What's your industry?</label>
           <div className="grid grid-cols-2 gap-2">
             {industryOptions.map((opt) => {
               const active = industry === opt
@@ -249,11 +249,11 @@ function Step3Business({
                   onClick={() => onIndustryChange(opt)}
                   className={`text-left rounded-xl p-3 border cursor-pointer transition-all duration-200 ${
                     active
-                      ? 'border-[#D5EB4B] bg-[rgba(213,235,75,0.05)]'
-                      : 'border-[#3E3E48] bg-[#33333F] hover:border-[#3E3E46]'
+                      ? 'border-[#B8CF2E] bg-[rgba(213,235,75,0.05)]'
+                      : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
                   }`}
                 >
-                  <span className="text-sm text-white">{opt}</span>
+                  <span className="text-sm text-[#1A1A2E]">{opt}</span>
                 </button>
               )
             })}
@@ -262,7 +262,7 @@ function Step3Business({
 
         {/* Revenue — tappable cards */}
         <div>
-          <label className="block text-sm text-[#9CA3AF] mb-3">Monthly revenue range</label>
+          <label className="block text-sm text-[#6B7280] mb-3">Monthly revenue range</label>
           <div className="flex flex-col gap-2">
             {revenueOptions.map((opt) => {
               const active = revenueRange === opt.label
@@ -273,11 +273,11 @@ function Step3Business({
                   onClick={() => onRevenueChange(opt.label)}
                   className={`flex items-center justify-between text-left rounded-xl p-3 border cursor-pointer transition-all duration-200 ${
                     active
-                      ? 'border-[#D5EB4B] bg-[rgba(213,235,75,0.05)]'
-                      : 'border-[#3E3E48] bg-[#33333F] hover:border-[#3E3E46]'
+                      ? 'border-[#B8CF2E] bg-[rgba(213,235,75,0.05)]'
+                      : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
                   }`}
                 >
-                  <span className="text-sm font-medium text-white">{opt.label}</span>
+                  <span className="text-sm font-medium text-[#1A1A2E]">{opt.label}</span>
                   <span className="text-xs text-[#6B7280]">{opt.sub}</span>
                 </button>
               )
@@ -313,39 +313,39 @@ function Step4Contact({
 }) {
   return (
     <div>
-      <h3 className="text-lg font-semibold text-white mb-1">
+      <h3 className="text-lg font-semibold text-[#1A1A2E] mb-1">
         Almost done. Where should we send your audit?
       </h3>
-      <p className="text-sm text-[#9CA3AF] mb-6">We'll WhatsApp your custom automation roadmap.</p>
+      <p className="text-sm text-[#6B7280] mb-6">We'll WhatsApp your custom automation roadmap.</p>
       <div className="flex flex-col gap-4">
         <div>
-          <label className="block text-sm text-[#9CA3AF] mb-1">Your Name</label>
+          <label className="block text-sm text-[#6B7280] mb-1">Your Name</label>
           <input
             type="text"
             value={name}
             onChange={(e) => onNameChange(e.target.value)}
             placeholder="Full name"
-            className="w-full bg-[#33333F] border border-[#3E3E48] rounded-lg p-4 text-white text-sm placeholder:text-[#6B7280] focus:border-[#D5EB4B] focus:ring-1 focus:ring-[#D5EB4B] outline-none transition-colors"
+            className="w-full bg-white border border-[#E5E7EB] rounded-lg p-4 text-[#1A1A2E] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors"
           />
         </div>
         <div>
-          <label className="block text-sm text-[#9CA3AF] mb-1">WhatsApp Number</label>
+          <label className="block text-sm text-[#6B7280] mb-1">WhatsApp Number</label>
           <input
             type="tel"
             value={phone}
             onChange={(e) => onPhoneChange(e.target.value)}
             placeholder="98765 43210"
-            className="w-full bg-[#33333F] border border-[#3E3E48] rounded-lg p-4 text-white text-sm placeholder:text-[#6B7280] focus:border-[#D5EB4B] focus:ring-1 focus:ring-[#D5EB4B] outline-none transition-colors"
+            className="w-full bg-white border border-[#E5E7EB] rounded-lg p-4 text-[#1A1A2E] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors"
           />
         </div>
         <div>
-          <label className="block text-sm text-[#9CA3AF] mb-1">Business Name</label>
+          <label className="block text-sm text-[#6B7280] mb-1">Business Name</label>
           <input
             type="text"
             value={businessName}
             onChange={(e) => onBusinessNameChange(e.target.value)}
             placeholder="Your company name"
-            className="w-full bg-[#33333F] border border-[#3E3E48] rounded-lg p-4 text-white text-sm placeholder:text-[#6B7280] focus:border-[#D5EB4B] focus:ring-1 focus:ring-[#D5EB4B] outline-none transition-colors"
+            className="w-full bg-white border border-[#E5E7EB] rounded-lg p-4 text-[#1A1A2E] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors"
           />
         </div>
 
@@ -357,7 +357,7 @@ function Step4Contact({
         >
           <span
             className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-              whatsappConsent ? 'border-[#D5EB4B] bg-[#D5EB4B]' : 'border-[#4E4E56]'
+              whatsappConsent ? 'border-[#D5EB4B] bg-[#D5EB4B]' : 'border-[#D1D5DB]'
             }`}
           >
             {whatsappConsent && (
@@ -366,7 +366,7 @@ function Step4Contact({
               </svg>
             )}
           </span>
-          <span className="text-sm text-[#9CA3AF]">
+          <span className="text-sm text-[#6B7280]">
             Send me my automation roadmap on WhatsApp
           </span>
         </button>
@@ -376,7 +376,7 @@ function Step4Contact({
         <p className="mt-3 text-sm text-[#EF4444]">{formError}</p>
       )}
 
-      <p className="mt-6 text-xs text-[#9CA3AF] text-center">
+      <p className="mt-6 text-xs text-[#6B7280] text-center">
         10 spots this quarter. No payment needed. Free audit.
       </p>
     </div>
@@ -398,34 +398,34 @@ function ThankYou({ waitlistNum }: { waitlistNum: number }) {
           </svg>
         </div>
       </div>
-      <h3 className="text-2xl font-bold text-white mb-2">You're In!</h3>
-      <p className="text-4xl font-bold text-[#D5EB4B] mb-3">#{waitlistNum}</p>
-      <p className="text-sm text-[#9CA3AF] mb-6">
+      <h3 className="text-2xl font-bold text-[#1A1A2E] mb-2">You're In!</h3>
+      <p className="text-4xl font-bold text-[#B8CF2E] mb-3">#{waitlistNum}</p>
+      <p className="text-sm text-[#6B7280] mb-6">
         Check your WhatsApp. Your automation roadmap is on its way.
       </p>
 
-      <div className="bg-[rgba(213,235,75,0.05)] border border-[#3E3E48] rounded-2xl p-6 text-left">
-        <h4 className="text-lg font-bold text-white mb-4">What happens next?</h4>
+      <div className="bg-[rgba(213,235,75,0.05)] border border-[#E5E7EB] rounded-2xl p-6 text-left">
+        <h4 className="text-lg font-bold text-[#1A1A2E] mb-4">What happens next?</h4>
         <div className="space-y-4">
           <div className="flex gap-3">
             <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#D5EB4B] text-[#0c0c10] font-bold flex items-center justify-center text-sm">1</span>
             <div>
-              <p className="text-sm font-medium text-white">WhatsApp confirmation</p>
-              <p className="text-xs text-[#9CA3AF]">You'll get a message within minutes</p>
+              <p className="text-sm font-medium text-[#1A1A2E]">WhatsApp confirmation</p>
+              <p className="text-xs text-[#6B7280]">You'll get a message within minutes</p>
             </div>
           </div>
           <div className="flex gap-3">
             <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#D5EB4B] text-[#0c0c10] font-bold flex items-center justify-center text-sm">2</span>
             <div>
-              <p className="text-sm font-medium text-white">We audit your operations</p>
-              <p className="text-xs text-[#9CA3AF]">Manual review by our team within 24 hours</p>
+              <p className="text-sm font-medium text-[#1A1A2E]">We audit your operations</p>
+              <p className="text-xs text-[#6B7280]">Manual review by our team within 24 hours</p>
             </div>
           </div>
           <div className="flex gap-3">
             <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#D5EB4B] text-[#0c0c10] font-bold flex items-center justify-center text-sm">3</span>
             <div>
-              <p className="text-sm font-medium text-white">Custom roadmap on WhatsApp</p>
-              <p className="text-xs text-[#9CA3AF]">Exactly what to automate, how much it saves, and how fast</p>
+              <p className="text-sm font-medium text-[#1A1A2E]">Custom roadmap on WhatsApp</p>
+              <p className="text-xs text-[#6B7280]">Exactly what to automate, how much it saves, and how fast</p>
             </div>
           </div>
         </div>
@@ -589,23 +589,23 @@ export default function QuizForm() {
 
   /* ── main render ────────────────────────────────── */
   return (
-    <section id="quiz" className="bg-[#2A2A35] py-20 px-4">
+    <section id="quiz" className="bg-[#FFFDF7] py-20 px-4">
       <div className="max-w-2xl mx-auto text-center mb-12">
         <ScrollReveal>
           <span className="text-center font-mono text-xs uppercase tracking-widest mb-4 text-[#D5EB4B] inline-block">
             Start Here
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#1A1A2E] mb-4">
             Find Out What You Can Automate
           </h2>
-          <p className="text-[#9CA3AF]">
+          <p className="text-[#6B7280]">
             4 quick taps. Get a custom automation audit for your business.
           </p>
         </ScrollReveal>
       </div>
 
       <ScrollReveal>
-        <div className="max-w-2xl mx-auto bg-[#33333F] border border-[#3E3E48] rounded-2xl p-6 sm:p-8">
+        <div className="max-w-2xl mx-auto bg-white border border-[#E5E7EB] shadow-lg rounded-2xl p-6 sm:p-8">
           {done ? (
             <ThankYou waitlistNum={waitlistNum} />
           ) : (
@@ -666,7 +666,7 @@ export default function QuizForm() {
                   <button
                     type="button"
                     onClick={goBack}
-                    className="text-sm text-[#9CA3AF] hover:text-white transition-colors cursor-pointer"
+                    className="text-sm text-[#6B7280] hover:text-[#1A1A2E] transition-colors cursor-pointer"
                   >
                     &larr; Back
                   </button>

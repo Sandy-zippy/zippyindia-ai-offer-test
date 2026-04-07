@@ -37,7 +37,7 @@ function SliderInput({
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between mb-3">
-        <label className="text-sm text-[#9CA3AF]">{label}</label>
+        <label className="text-sm text-[#6B7280]">{label}</label>
         <span className="text-lg font-bold text-[#D5EB4B]">
           {prefix}{value}{suffix}
         </span>
@@ -50,7 +50,7 @@ function SliderInput({
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full h-2 rounded-full appearance-none cursor-pointer accent-[#D5EB4B]"
-        style={{ background: `linear-gradient(to right, #D5EB4B ${((value - min) / (max - min)) * 100}%, #3E3E48 ${((value - min) / (max - min)) * 100}%)` }}
+        style={{ background: `linear-gradient(to right, #D5EB4B ${((value - min) / (max - min)) * 100}%, #E5E7EB ${((value - min) / (max - min)) * 100}%)` }}
       />
       <div className="flex justify-between mt-1">
         <span className="text-xs text-[#6B7280]">{prefix}{min}{suffix}</span>
@@ -78,7 +78,7 @@ function StatCard({
   color: string
 }) {
   return (
-    <div className="bg-[#33333F] border border-[#3E3E48] rounded-2xl p-6 text-center">
+    <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-2xl p-6 text-center">
       <p className="text-xs font-mono uppercase tracking-wider text-[#6B7280] mb-2">{sublabel}</p>
       <AnimatedCounter
         target={value}
@@ -87,7 +87,7 @@ function StatCard({
         className={`text-4xl font-bold ${color}`}
         duration={1}
       />
-      <p className="text-sm text-[#9CA3AF] mt-2">{label}</p>
+      <p className="text-sm text-[#6B7280] mt-2">{label}</p>
     </div>
   )
 }
@@ -126,16 +126,16 @@ export default function ROICalculator() {
   }, [pushDataLayer])
 
   return (
-    <section id="roi" className="bg-[#2A2A35] py-20 px-4">
+    <section id="roi" className="bg-[#FFFDF7] py-20 px-4">
       <div className="max-w-5xl mx-auto">
         <ScrollReveal>
           <p className="text-center font-mono text-xs uppercase tracking-widest mb-4 text-[#D5EB4B]">
             THE ROI
           </p>
-          <h2 className="text-center text-3xl font-bold text-white sm:text-4xl mb-4">
+          <h2 className="text-center text-3xl font-bold text-[#1A1A2E] sm:text-4xl mb-4">
             Calculate Your Automation Savings
           </h2>
-          <p className="text-center text-sm text-[#9CA3AF] mb-12">
+          <p className="text-center text-sm text-[#6B7280] mb-12">
             Move the sliders. See what you're leaving on the table.
           </p>
         </ScrollReveal>
@@ -144,8 +144,8 @@ export default function ROICalculator() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {/* Left: Inputs */}
           <ScrollReveal delay={0.1}>
-            <div className="bg-[#33333F] border border-[#3E3E48] rounded-2xl p-6 sm:p-8">
-              <h3 className="text-lg font-semibold text-white mb-6">Your Numbers</h3>
+            <div className="bg-white border border-[#E5E7EB] shadow-lg rounded-2xl p-6 sm:p-8">
+              <h3 className="text-lg font-semibold text-[#1A1A2E] mb-6">Your Numbers</h3>
               <SliderInput
                 label="Team Size"
                 value={employees}
@@ -208,16 +208,16 @@ export default function ROICalculator() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-[#3E3E48] mb-12" />
+        <div className="border-t border-[#E5E7EB] mb-12" />
 
         {/* Comparison table */}
         <ScrollReveal delay={0.15}>
-          <h3 className="text-xl font-bold text-white text-center mb-8">Your Team Today vs. With AI</h3>
-          <div className="overflow-x-auto">
-            <table className="w-full overflow-hidden rounded-2xl border border-[#3E3E48] bg-[#33333F]">
+          <h3 className="text-xl font-bold text-[#1A1A2E] text-center mb-8">Your Team Today vs. With AI</h3>
+          <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <table className="w-full overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white">
               <thead>
-                <tr className="bg-[#3E3E48]">
-                  <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider text-[#9CA3AF]">
+                <tr className="bg-[#F3F4F6]">
+                  <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider text-[#6B7280]">
                     Task
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider text-[#EF4444]">
@@ -235,9 +235,9 @@ export default function ROICalculator() {
                 {rows.map((row, i) => (
                   <tr
                     key={row.task}
-                    className={i < rows.length - 1 ? 'border-b border-[#3E3E48]' : ''}
+                    className={i < rows.length - 1 ? 'border-b border-[#E5E7EB]' : ''}
                   >
-                    <td className="px-6 py-5 text-sm font-medium text-white">
+                    <td className="px-6 py-5 text-sm font-medium text-[#1A1A2E]">
                       {row.task}
                     </td>
                     <td className="px-6 py-5 text-sm text-[#EF4444]/70">

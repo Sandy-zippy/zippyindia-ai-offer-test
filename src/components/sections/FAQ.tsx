@@ -66,6 +66,7 @@ export default function FAQ() {
               <div className="mb-3 overflow-hidden rounded-xl border border-[#E5E7EB] bg-white">
                 <button
                   onClick={() => toggle(i)}
+                  aria-expanded={openIndex === i}
                   className="flex w-full items-center justify-between p-6 text-left font-semibold text-[#111827]"
                 >
                   <span>{faq.q}</span>

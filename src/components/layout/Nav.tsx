@@ -33,8 +33,8 @@ export default function Nav() {
     >
       <div className="max-w-6xl mx-auto flex items-center justify-between px-5 py-3">
         {/* Logo */}
-        <a href="/" className="flex items-center gap-2 shrink-0">
-          <img src="/logos/icon-64.png" alt="ZippyScale" className="w-7 h-7" />
+        <a href="#" className="flex items-center gap-2 shrink-0">
+          <img src={import.meta.env.BASE_URL + "logos/icon-64.png"} alt="ZippyScale" className="w-7 h-7" />
           <span className="font-['Space_Grotesk'] font-bold text-lg text-[#1A1A2E]">
             ZippyScale
           </span>

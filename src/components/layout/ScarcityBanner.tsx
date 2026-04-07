@@ -16,7 +16,7 @@ export default function ScarcityBanner() {
 
   useEffect(() => {
     // Try to fetch real count from API
-    fetch('https://zippyscale-api.vercel.app/api/waitlist-count')
+    fetch('https://zippyscale-3ajsaibi1-sandys-projects-60666aac.vercel.app/api/waitlist-count')
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (data?.count) {

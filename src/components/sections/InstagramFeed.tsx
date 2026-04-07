@@ -3,36 +3,36 @@ import ScrollReveal from '../ui/ScrollReveal'
 
 const posts = [
   {
-    image: '/instagram/post-5-award.jpg',
+    image: import.meta.env.BASE_URL + 'instagram/post-5-award.jpg',
     caption:
       'Awarded "Fastest Growing AI-Based Growth Marketing Agency in India" at Visionary Achievers Awards',
     link: 'https://www.instagram.com/p/DVGqmdRDyag/',
     highlight: true,
   },
   {
-    image: '/instagram/post-1-nubuild.jpg',
+    image: import.meta.env.BASE_URL + 'instagram/post-1-nubuild.jpg',
     caption: 'ZippyScale x NUBuild. Growth partner, locked in.',
     link: 'https://www.instagram.com/p/DWEQMWeDxXd/',
   },
   {
-    image: '/instagram/post-2-claude.jpg',
+    image: import.meta.env.BASE_URL + 'instagram/post-2-claude.jpg',
     caption:
       'Building full campaigns with AI. Landing pages, creatives, automations.',
     link: 'https://www.instagram.com/p/DV_YqecCed0/',
   },
   {
-    image: '/instagram/post-3-team.jpg',
+    image: import.meta.env.BASE_URL + 'instagram/post-3-team.jpg',
     caption:
       'The content looks effortless. The people behind it? Absolutely not.',
     link: 'https://www.instagram.com/p/DVscT7PjxZe/',
   },
   {
-    image: '/instagram/post-4-pawme.jpg',
+    image: import.meta.env.BASE_URL + 'instagram/post-4-pawme.jpg',
     caption: 'Testing @pawme.ai robot. AI meets real life.',
     link: 'https://www.instagram.com/p/DVdrUa_Eooc/',
   },
   {
-    image: '/instagram/post-6-credibility.jpg',
+    image: import.meta.env.BASE_URL + 'instagram/post-6-credibility.jpg',
     caption:
       'True credibility is built through years of trust and sharp thinking.',
     link: 'https://www.instagram.com/p/DTCaUHziDaa/',
@@ -142,7 +142,7 @@ export default function InstagramFeed() {
               <PostCard
                 key={post.link}
                 post={post}
-                className="min-w-[280px] h-[320px] snap-center flex-shrink-0"
+                className="min-w-[260px] h-[320px] snap-center flex-shrink-0"
               />
             ))}
           </div>
