@@ -54,8 +54,7 @@ function AutomationHome() {
         <AwarenessBlocks />
         <Divider />
         <PainSection />
-        <Divider />
-        <QuizForm />
+        <MidPageCTA />
         <Divider />
         <ProofOfWork />
         <Divider />
@@ -73,6 +72,7 @@ function AutomationHome() {
         <Divider />
         <FAQ />
         <Divider />
+        <QuizForm />
         <FinalCTA />
       </main>
       <Footer />

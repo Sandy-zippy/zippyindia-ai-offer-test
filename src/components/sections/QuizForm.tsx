@@ -589,23 +589,25 @@ export default function QuizForm() {
 
   /* ── main render ────────────────────────────────── */
   return (
-    <section id="quiz" className="bg-[#FFFDF7] py-20 px-4">
+    <section id="quiz" className="bg-gradient-to-b from-[#2A2A35] to-[#1A1A2E] py-20 px-4">
       <div className="max-w-2xl mx-auto text-center mb-12">
         <ScrollReveal>
           <span className="text-center font-mono text-xs uppercase tracking-widest mb-4 text-[#D5EB4B] inline-block">
             Start Here
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#1A1A2E] mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             Find Out What You Can Automate
           </h2>
-          <p className="text-[#6B7280]">
+          <p className="text-[#9CA3AF]">
             4 quick taps. Get a custom automation audit for your business.
           </p>
         </ScrollReveal>
       </div>
 
       <ScrollReveal>
-        <div className="max-w-2xl mx-auto bg-white border border-[#E5E7EB] shadow-lg rounded-2xl p-6 sm:p-8">
+        <div className="max-w-2xl mx-auto relative">
+          <div className="absolute -inset-4 bg-[#D5EB4B]/10 rounded-3xl blur-2xl" />
+          <div className="relative bg-white border border-[#E5E7EB] shadow-lg rounded-2xl p-6 sm:p-8">
           {done ? (
             <ThankYou waitlistNum={waitlistNum} />
           ) : (
@@ -695,6 +697,7 @@ export default function QuizForm() {
               </div>
             </>
           )}
+          </div>
         </div>
       </ScrollReveal>
 
