@@ -15,8 +15,8 @@ const pains = [
       </svg>
     ),
     title: 'Leads die in WhatsApp groups',
-    cost: 8,
-    costLabel: '₹8L/yr lost revenue',
+    costPct: 15,
+    costLabel: '15% revenue lost',
     detail: '60% of leads go cold without 5-minute follow-up. Your team takes hours.',
   },
   {
@@ -29,8 +29,8 @@ const pains = [
       </svg>
     ),
     title: 'Reports take 3 days to compile',
-    cost: 5,
-    costLabel: '₹5L/yr in wasted salary',
+    costPct: 10,
+    costLabel: '10% of team capacity wasted',
     detail: 'Your best people spend Monday to Wednesday in Excel instead of selling.',
   },
   {
@@ -41,9 +41,9 @@ const pains = [
       </svg>
     ),
     title: 'Follow-ups are manual and forgotten',
-    cost: 12,
-    costLabel: '₹12L/yr in lost deals',
-    detail: '23% revenue lost from slow follow-ups. Your competitor closes while you forget.',
+    costPct: 23,
+    costLabel: '23% revenue lost to slow follow-ups',
+    detail: 'Your competitor closes while your team forgets to reply.',
   },
   {
     id: 'data',
@@ -56,8 +56,8 @@ const pains = [
       </svg>
     ),
     title: 'CRM updates are copy-paste chaos',
-    cost: 6,
-    costLabel: '₹6L/yr in data entry salary',
+    costPct: 12,
+    costLabel: '12% of payroll on data entry',
     detail: '8+ hours/week of manual data entry that AI handles in real-time.',
   },
   {
@@ -69,8 +69,8 @@ const pains = [
       </svg>
     ),
     title: 'Invoices sit in someone\'s inbox',
-    cost: 4,
-    costLabel: '₹4L/yr in delayed payments',
+    costPct: 8,
+    costLabel: '8% cash flow delayed',
     detail: '45 min per invoice manually. Auto-generate and send in 30 seconds.',
   },
   {
@@ -84,9 +84,9 @@ const pains = [
       </svg>
     ),
     title: 'You hire to scale instead of systemise',
-    cost: 15,
-    costLabel: '₹15L/yr per unnecessary hire',
-    detail: 'Every person you hire for automatable work is ₹12-15L/yr burned.',
+    costPct: 30,
+    costLabel: '30% of hires are automatable',
+    detail: 'Every person hired for repetitive work is salary burned on something AI handles.',
   },
 ]
 
@@ -102,9 +102,9 @@ export default function PainSection() {
     })
   }
 
-  const totalCost = pains
+  const totalPct = pains
     .filter(p => selected.has(p.id))
-    .reduce((sum, p) => sum + p.cost, 0)
+    .reduce((sum, p) => sum + p.costPct, 0)
 
   return (
     <section id="pain" className="bg-[#FFFDF7] py-20 px-4">
@@ -178,20 +178,20 @@ export default function PainSection() {
             >
               <div className="inline-block bg-[#991B1B] rounded-2xl px-8 py-6 text-center">
                 <p className="text-sm text-white/80 mb-1">
-                  You selected {selected.size} problem{selected.size > 1 ? 's' : ''}. Estimated annual cost:
+                  You selected {selected.size} problem{selected.size > 1 ? 's' : ''}. Estimated impact:
                 </p>
                 <p className="font-mono font-bold text-4xl text-white">
-                  ₹{totalCost}L/year
+                  ~{totalPct}% wasted
                 </p>
                 <p className="text-sm text-white/70 mt-2 mb-4">
-                  That's ₹{Math.round(totalCost / 12)}L every month walking out the door.
+                  That's {totalPct}% of your revenue and capacity leaking every year.
                 </p>
                 <a
                   href="#quiz"
-                  onClick={() => trackCTAClick('pain-calculator', 'Get Your Free Audit')}
+                  onClick={() => trackCTAClick('pain-calculator', 'Stop the Bleeding')}
                   className="inline-block font-bold rounded-xl px-8 py-3 text-sm bg-[#D5EB4B] text-[#0c0c10] hover:brightness-110 transition-all"
                 >
-                  {totalCost > 0 ? `Stop Losing ₹${totalCost}L/Year` : 'Get Your Free Audit'}
+                  Stop the Bleeding
                 </a>
               </div>
             </motion.div>

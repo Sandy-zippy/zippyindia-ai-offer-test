@@ -15,7 +15,7 @@ const stagger = {
 }
 
 const stats = [
-  { target: 40, prefix: '₹', suffix: 'L+/yr', label: 'Money Saved' },
+  { target: 40, suffix: '%', label: 'Cost Reduction' },
   { target: 3, suffix: 'x', label: 'Revenue Growth' },
   { target: 10, suffix: 'x Output', label: 'Same Team' },
 ]
@@ -271,7 +271,7 @@ export default function Hero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
               </span>
-              For ₹50L+ Indian Businesses
+              For Growing Indian Businesses
             </span>
           </motion.div>
 

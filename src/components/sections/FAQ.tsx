@@ -29,7 +29,7 @@ const faqs = [
   },
   {
     q: 'What does execution cost after the free audit?',
-    a: 'The audit is completely free with no strings attached. If you want us to execute, pricing depends on the scope and complexity of automations. It is a one-time build cost plus a small monthly maintenance fee. Most clients save 5 to 8x what they invest within the first 90 days. The audit report includes exact pricing for your specific case. Most clients invest ₹1-3L for their first automation package and save 5-8x within 90 days.',
+    a: 'The audit is completely free with no strings attached. If you want us to execute, pricing depends on the scope and complexity of automations. It is a one-time build cost plus a small monthly maintenance fee. Most clients save 5 to 8x what they invest within the first 90 days. The audit report includes exact pricing for your specific case.',
   },
   {
     q: 'Why is the audit free?',

@@ -22,7 +22,7 @@ const cards = [
         <polyline points="16 7 22 7 22 13" />
       </svg>
     ),
-    text: 'You do ₹50L+ revenue and need systems, not more people',
+    text: 'You have a growing business and need systems, not more people',
   },
   {
     id: 'whatsapp',
@@ -97,15 +97,6 @@ export default function WhoIsThisFor() {
                     <p className={`text-base font-medium ${active ? 'text-[#0A0A0F]' : 'text-[#0A0A0F]'}`}>
                       {card.text}
                     </p>
-                    {active && (
-                      <motion.span
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="inline-block mt-2 text-xs font-bold text-[#B8CF2E] bg-[#B8CF2E]/10 px-3 py-1 rounded-full"
-                      >
-                        That's you
-                      </motion.span>
-                    )}
                   </div>
                   <span
                     className={`flex-shrink-0 w-6 h-6 rounded border-2 flex items-center justify-center transition-colors mt-1 ${

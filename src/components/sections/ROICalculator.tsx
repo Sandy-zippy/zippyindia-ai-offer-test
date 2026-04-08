@@ -99,10 +99,10 @@ export default function ROICalculator() {
   const [avgSalary, setAvgSalary] = useState(15)
   const [manualHours, setManualHours] = useState(20)
 
-  // calculations
-  const annualSavings = Math.round(employees * avgSalary * (manualHours / 40) * 0.7)
+  // calculations — percentages only
+  const pctPayrollSaved = Math.round((manualHours / 40) * 70)
   const hoursSavedPerMonth = Math.round(employees * manualHours * 4 * 0.7)
-  const revenueBoost = Math.round(annualSavings * 1.5)
+  const capacityUnlocked = Math.round((manualHours / 40) * 100)
 
   // debounced dataLayer push
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -156,13 +156,12 @@ export default function ROICalculator() {
                 onChange={setEmployees}
               />
               <SliderInput
-                label="Avg Salary"
+                label="Avg Salary Band"
                 value={avgSalary}
                 min={3}
                 max={30}
                 step={1}
-                prefix="₹"
-                suffix="L/yr"
+                suffix=" (band)"
                 onChange={setAvgSalary}
               />
               <SliderInput
@@ -181,10 +180,9 @@ export default function ROICalculator() {
           <ScrollReveal delay={0.2}>
             <div className="flex flex-col gap-4">
               <StatCard
-                value={annualSavings}
-                prefix="₹"
-                suffix="L/yr"
-                label="Annual Savings"
+                value={pctPayrollSaved}
+                suffix="%"
+                label="Payroll Savings"
                 sublabel="Cost you eliminate"
                 color="text-[#22C55E]"
               />
@@ -196,10 +194,9 @@ export default function ROICalculator() {
                 color="text-[#D5EB4B]"
               />
               <StatCard
-                value={revenueBoost}
-                prefix="₹"
-                suffix="L"
-                label="Potential Revenue Growth"
+                value={capacityUnlocked}
+                suffix="%"
+                label="Capacity Unlocked"
                 sublabel="When your team sells instead of doing data entry"
                 color="text-[#F59E0B]"
               />
@@ -264,7 +261,7 @@ export default function ROICalculator() {
               href="#quiz"
               className="inline-block font-bold rounded-xl px-10 py-5 text-lg bg-[#D5EB4B] text-[#0c0c10] hover:brightness-110 transition-all"
             >
-              Stop Leaving ₹{annualSavings}L on the Table
+              Stop Wasting {pctPayrollSaved}% of Your Payroll
             </a>
             <p className="text-[#9CA3AF] text-xs mt-3">2-minute quiz. Custom roadmap in 48 hours.</p>
           </div>

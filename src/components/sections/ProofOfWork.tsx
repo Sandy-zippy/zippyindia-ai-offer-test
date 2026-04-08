@@ -2,7 +2,7 @@ import ScrollReveal from '../ui/ScrollReveal'
 import AnimatedCounter from '../ui/AnimatedCounter'
 
 const stats = [
-  { target: 1.6, prefix: '₹', suffix: ' Cr+', label: 'Saved across clients', decimals: 1 },
+  { target: 40, prefix: '', suffix: '%+', label: 'Avg cost reduction for clients', decimals: 0 },
   { target: 8000, prefix: '', suffix: '+', label: 'Manual hours saved across 23 clients in 6 months', decimals: 0 },
   { target: 23, prefix: '', suffix: '+', label: '23 businesses across 8 industries', decimals: 0 },
   { target: 10, prefix: '', suffix: 'x', label: 'Output without new hires', decimals: 0 },
