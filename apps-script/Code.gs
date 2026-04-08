@@ -210,7 +210,7 @@ function upsertGHLContact(data, score, leadTag, config) {
   })
 
   const code = res.getResponseCode()
-  if (code !== 200) throw new Error('GHL ' + code + ': ' + res.getContentText())
+  if (code !== 200 && code !== 201) throw new Error('GHL ' + code + ': ' + res.getContentText())
 
   const result = JSON.parse(res.getContentText())
   return { status: 'ok', contactId: result.contact ? result.contact.id : null }
