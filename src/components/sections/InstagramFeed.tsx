@@ -64,10 +64,7 @@ function PostCard({
   className?: string
 }) {
   return (
-    <motion.a
-      href={post.link}
-      target="_blank"
-      rel="noopener noreferrer"
+    <motion.div
       className={`relative rounded-2xl overflow-hidden group block ${className}`}
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.25 }}
@@ -90,11 +87,8 @@ function PostCard({
         <p className="text-white text-sm mt-3 mb-2 font-[Space_Grotesk] leading-snug max-w-[220px]">
           {post.caption}
         </p>
-        <span className="text-[#D5EB4B] text-xs font-[JetBrains_Mono] mt-1">
-          View on Instagram
-        </span>
       </div>
-    </motion.a>
+    </motion.div>
   )
 }
 

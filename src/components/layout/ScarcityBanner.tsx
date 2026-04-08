@@ -1,37 +1,9 @@
-import { useState, useEffect } from 'react'
-
-function getLocalCounter(): number {
-  try {
-    return parseInt(localStorage.getItem('zippy_waitlist_counter') || '11', 10)
-  } catch {
-    return 11
-  }
-}
+import { useState } from 'react'
 
 export default function ScarcityBanner() {
   const [visible, setVisible] = useState(
     () => sessionStorage.getItem('scarcity_dismissed') !== 'true'
   )
-  const [counter, setCounter] = useState(getLocalCounter)
-
-  useEffect(() => {
-    // Try to fetch real count from API
-    fetch('https://zippyscale-3ajsaibi1-sandys-projects-60666aac.vercel.app/api/waitlist-count')
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (data?.count) {
-          setCounter(data.count)
-          localStorage.setItem('zippy_waitlist_counter', String(data.count))
-        }
-      })
-      .catch(() => { /* use localStorage fallback */ })
-  }, [])
-
-  useEffect(() => {
-    const onUpdate = () => setCounter(getLocalCounter())
-    window.addEventListener('waitlist-updated', onUpdate)
-    return () => window.removeEventListener('waitlist-updated', onUpdate)
-  }, [])
 
   if (!visible) return null
 
@@ -44,7 +16,7 @@ export default function ScarcityBanner() {
   return (
     <div className="sticky top-0 z-[60] flex items-center justify-center h-12 bg-[#D5EB4B] px-4">
       <p className="font-['Space_Grotesk'] font-semibold text-sm text-[#0c0c10] text-center">
-        {Math.max(10 - Math.min(counter, 9), 1)} spots remaining this quarter &middot; <span className="font-bold text-base">{counter}</span> businesses already applied
+        Limited spots this quarter &middot; Free AI automation audit &middot; No obligation
       </p>
       <button
         onClick={dismiss}

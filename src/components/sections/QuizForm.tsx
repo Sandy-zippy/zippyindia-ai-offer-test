@@ -1,9 +1,8 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ScrollReveal from '../ui/ScrollReveal'
-import Toast from '../ui/Toast'
 import { getUTMParams, getFbcParam, getFbpParam } from '../../lib/analytics'
-import { trackQuizProgress, trackQuizStart, trackQuizSubmit } from '../../lib/tracking'
+import { trackQuizStart, trackQuizSubmit } from '../../lib/tracking'
 
 /* ── data ─────────────────────────────────────────── */
 
@@ -20,12 +19,6 @@ const automationOptions = [
   'Others',
 ]
 
-const teamSizeOptions = [
-  { label: '1 to 3 people', sub: 'Small team, big ambitions' },
-  { label: '4 to 10 people', sub: 'Growing fast, need systems' },
-  { label: '10+ people', sub: 'Scale without more headcount' },
-]
-
 const industryOptions = [
   'Manufacturing',
   'IT/Software',
@@ -37,14 +30,6 @@ const industryOptions = [
   'Construction',
   'Hospitality',
   'Other',
-]
-
-const revenueOptions = [
-  { label: '₹50L - 1Cr', sub: 'Early stage' },
-  { label: '₹1Cr - 3Cr', sub: 'Building momentum' },
-  { label: '₹3Cr - 5Cr', sub: 'Ready to scale' },
-  { label: '₹5Cr - 10Cr', sub: 'Growth mode' },
-  { label: '₹10Cr+', sub: 'Enterprise scale' },
 ]
 
 /* ── helpers ──────────────────────────────────────── */
@@ -65,16 +50,8 @@ async function getWaitlistNumber(): Promise<number> {
       const data = await res.json()
       if (data.count) return data.count
     }
-  } catch { /* fallback to localStorage */ }
-  try {
-    const key = 'zippy_waitlist_counter'
-    const current = parseInt(localStorage.getItem(key) || '11', 10)
-    const next = current + 1
-    localStorage.setItem(key, String(next))
-    return next
-  } catch {
-    return 12
-  }
+  } catch { /* fallback */ }
+  return 12
 }
 
 /* ── slide variants ───────────────────────────────── */
@@ -90,7 +67,7 @@ const slideVariants = {
 function ProgressBar({ step }: { step: number }) {
   return (
     <div className="flex gap-2 mb-8">
-      {[1, 2, 3, 4].map((s) => (
+      {[1, 2].map((s) => (
         <div
           key={s}
           className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
@@ -102,195 +79,8 @@ function ProgressBar({ step }: { step: number }) {
   )
 }
 
-/* Step 1: What to automate — multi-select tappable cards */
-function Step1Tasks({
-  selected,
-  othersText,
-  onToggle,
-  onOthersChange,
-}: {
-  selected: string[]
-  othersText: string
-  onToggle: (opt: string) => void
-  onOthersChange: (val: string) => void
-}) {
-  return (
-    <div>
-      <h3 className="text-lg font-semibold text-[#0A0A0F] mb-1">
-        Which tasks eat the most time?
-      </h3>
-      <p className="text-sm text-[#6B7280] mb-6">Pick all that apply. No wrong answers.</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {automationOptions.map((opt) => {
-          const active = selected.includes(opt)
-          return (
-            <button
-              key={opt}
-              type="button"
-              onClick={() => onToggle(opt)}
-              className={`flex items-start gap-3 text-left rounded-xl p-4 border cursor-pointer transition-all duration-200 ${
-                active
-                  ? 'border-[#B8CF2E] bg-[rgba(213,235,75,0.05)]'
-                  : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
-              }`}
-            >
-              <span
-                className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-                  active ? 'border-[#D5EB4B] bg-[#D5EB4B]' : 'border-[#D1D5DB]'
-                }`}
-              >
-                {active && (
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path d="M2.5 6L5 8.5L9.5 3.5" stroke="#0c0c10" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
-              </span>
-              <span className="text-sm text-[#0A0A0F]">{opt}</span>
-            </button>
-          )
-        })}
-      </div>
-      {selected.includes('Others') && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          className="mt-3"
-        >
-          <input
-            type="text"
-            value={othersText}
-            onChange={(e) => onOthersChange(e.target.value)}
-            placeholder="Describe what you want to automate..."
-            className="w-full bg-white border border-[#E5E7EB] rounded-lg p-4 text-[#0A0A0F] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors"
-          />
-        </motion.div>
-      )}
-    </div>
-  )
-}
-
-/* Step 2: Team size — single select, auto-advance */
-function Step2Team({
-  teamSize,
-  onSelect,
-}: {
-  teamSize: string
-  onSelect: (opt: string) => void
-}) {
-  return (
-    <div>
-      <h3 className="text-lg font-semibold text-[#0A0A0F] mb-1">
-        How big is the team doing this work?
-      </h3>
-      <p className="text-sm text-[#6B7280] mb-6">Tap one to continue</p>
-      <div className="flex flex-col gap-3">
-        {teamSizeOptions.map((opt) => {
-          const active = teamSize === opt.label
-          return (
-            <button
-              key={opt.label}
-              type="button"
-              onClick={() => onSelect(opt.label)}
-              className={`flex items-center gap-4 text-left rounded-xl p-5 border cursor-pointer transition-all duration-200 ${
-                active
-                  ? 'border-[#B8CF2E] bg-[rgba(213,235,75,0.05)]'
-                  : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
-              }`}
-            >
-              <span
-                className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
-                  active ? 'border-[#D5EB4B]' : 'border-[#D1D5DB]'
-                }`}
-              >
-                {active && <span className="w-2.5 h-2.5 rounded-full bg-[#D5EB4B]" />}
-              </span>
-              <div>
-                <span className="text-sm font-medium text-[#0A0A0F]">{opt.label}</span>
-                <span className="block text-xs text-[#6B7280] mt-0.5">{opt.sub}</span>
-              </div>
-            </button>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-/* Step 3: Industry + Revenue — tappable cards, no dropdowns */
-function Step3Business({
-  industry,
-  revenueRange,
-  onIndustryChange,
-  onRevenueChange,
-}: {
-  industry: string
-  revenueRange: string
-  onIndustryChange: (val: string) => void
-  onRevenueChange: (val: string) => void
-}) {
-  return (
-    <div>
-      <h3 className="text-lg font-semibold text-[#0A0A0F] mb-1">
-        Tell us about your business
-      </h3>
-      <p className="text-sm text-[#6B7280] mb-6">Helps us tailor your audit.</p>
-
-      <div className="flex flex-col gap-6">
-        {/* Industry — tappable card grid */}
-        <div>
-          <label className="block text-sm text-[#6B7280] mb-3">What's your industry?</label>
-          <div className="grid grid-cols-2 gap-2">
-            {industryOptions.map((opt) => {
-              const active = industry === opt
-              return (
-                <button
-                  key={opt}
-                  type="button"
-                  onClick={() => onIndustryChange(opt)}
-                  className={`text-left rounded-xl p-3 border cursor-pointer transition-all duration-200 ${
-                    active
-                      ? 'border-[#B8CF2E] bg-[rgba(213,235,75,0.05)]'
-                      : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
-                  }`}
-                >
-                  <span className="text-sm text-[#0A0A0F]">{opt}</span>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Revenue — tappable cards */}
-        <div>
-          <label className="block text-sm text-[#6B7280] mb-3">Annual revenue range</label>
-          <div className="flex flex-col gap-2">
-            {revenueOptions.map((opt) => {
-              const active = revenueRange === opt.label
-              return (
-                <button
-                  key={opt.label}
-                  type="button"
-                  onClick={() => onRevenueChange(opt.label)}
-                  className={`flex items-center justify-between text-left rounded-xl p-3 border cursor-pointer transition-all duration-200 ${
-                    active
-                      ? 'border-[#B8CF2E] bg-[rgba(213,235,75,0.05)]'
-                      : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
-                  }`}
-                >
-                  <span className="text-sm font-medium text-[#0A0A0F]">{opt.label}</span>
-                  <span className="text-xs text-[#6B7280]">{opt.sub}</span>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/* Step 4: Contact — name, WhatsApp, business name, consent */
-function Step4Contact({
+/* Step 1: Contact info (THE LEAD CAPTURE) */
+function StepContact({
   name,
   phone,
   businessName,
@@ -314,9 +104,9 @@ function Step4Contact({
   return (
     <div>
       <h3 className="text-lg font-semibold text-[#0A0A0F] mb-1">
-        Last step. Where do we send your audit?
+        Get Your Free AI Automation Audit
       </h3>
-      <p className="text-sm text-[#6B7280] mb-6">We'll WhatsApp your custom automation roadmap.</p>
+      <p className="text-sm text-[#6B7280] mb-6">Enter your details. We'll send your custom roadmap on WhatsApp.</p>
       <div className="flex flex-col gap-4">
         <div>
           <label className="block text-sm text-[#6B7280] mb-1">Your Name</label>
@@ -377,8 +167,112 @@ function Step4Contact({
       )}
 
       <p className="mt-6 text-xs text-[#6B7280] text-center">
-        10 spots this quarter. No payment needed. Free audit.
+        Takes 30 seconds. No payment. No obligation.
       </p>
+    </div>
+  )
+}
+
+/* Step 2: Qualifying questions (OPTIONAL ENRICHMENT) */
+function StepQualify({
+  selected,
+  othersText,
+  industry,
+  onToggle,
+  onOthersChange,
+  onIndustryChange,
+}: {
+  selected: string[]
+  othersText: string
+  industry: string
+  onToggle: (opt: string) => void
+  onOthersChange: (val: string) => void
+  onIndustryChange: (val: string) => void
+}) {
+  return (
+    <div>
+      {/* Success indicator */}
+      <div className="flex items-center gap-2 mb-6 p-3 rounded-xl bg-[rgba(213,235,75,0.1)] border border-[#D5EB4B]/30">
+        <div className="w-6 h-6 rounded-full bg-[#D5EB4B] flex items-center justify-center flex-shrink-0">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M3 7L6 10L11 4" stroke="#0c0c10" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+        <p className="text-sm text-[#0A0A0F] font-medium">Your audit request is in! Help us customize it.</p>
+      </div>
+
+      {/* Automation areas */}
+      <h3 className="text-lg font-semibold text-[#0A0A0F] mb-1">
+        Which tasks eat the most time?
+      </h3>
+      <p className="text-sm text-[#6B7280] mb-4">Pick all that apply. No wrong answers.</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+        {automationOptions.map((opt) => {
+          const active = selected.includes(opt)
+          return (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => onToggle(opt)}
+              className={`flex items-start gap-3 text-left rounded-xl p-4 border cursor-pointer transition-all duration-200 ${
+                active
+                  ? 'border-[#B8CF2E] bg-[rgba(213,235,75,0.05)]'
+                  : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
+              }`}
+            >
+              <span
+                className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
+                  active ? 'border-[#D5EB4B] bg-[#D5EB4B]' : 'border-[#D1D5DB]'
+                }`}
+              >
+                {active && (
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M2.5 6L5 8.5L9.5 3.5" stroke="#0c0c10" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
+              </span>
+              <span className="text-sm text-[#0A0A0F]">{opt}</span>
+            </button>
+          )
+        })}
+      </div>
+      {selected.includes('Others') && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          className="mb-6"
+        >
+          <input
+            type="text"
+            value={othersText}
+            onChange={(e) => onOthersChange(e.target.value)}
+            placeholder="Describe what you want to automate..."
+            className="w-full bg-white border border-[#E5E7EB] rounded-lg p-4 text-[#0A0A0F] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors"
+          />
+        </motion.div>
+      )}
+
+      {/* Industry */}
+      <label className="block text-sm text-[#6B7280] mb-3">What's your industry?</label>
+      <div className="grid grid-cols-2 gap-2">
+        {industryOptions.map((opt) => {
+          const active = industry === opt
+          return (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => onIndustryChange(opt)}
+              className={`text-left rounded-xl p-3 border cursor-pointer transition-all duration-200 ${
+                active
+                  ? 'border-[#B8CF2E] bg-[rgba(213,235,75,0.05)]'
+                  : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
+              }`}
+            >
+              <span className="text-sm text-[#0A0A0F]">{opt}</span>
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -437,36 +331,24 @@ function ThankYou({ waitlistNum }: { waitlistNum: number }) {
 /* ── main component ──────────────────────────────── */
 
 export default function QuizForm() {
-  const [step, setStep] = useState(1)
+  const [phase, setPhase] = useState<'contact' | 'qualify' | 'done'>('contact')
   const [direction, setDirection] = useState(1)
 
-  // step 1
-  const [selected, setSelected] = useState<string[]>([])
-  const [othersText, setOthersText] = useState('')
-
-  // step 2
-  const [teamSize, setTeamSize] = useState('')
-
-  // step 3
-  const [industry, setIndustry] = useState('')
-  const [revenueRange, setRevenueRange] = useState('')
-
-  // step 4
+  // Contact fields (step 1)
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [businessName, setBusinessName] = useState('')
   const [whatsappConsent, setWhatsappConsent] = useState(true)
   const [formError, setFormError] = useState('')
-
-  // states
   const [submitting, setSubmitting] = useState(false)
-  const [done, setDone] = useState(false)
-  const [waitlistNum, setWaitlistNum] = useState(0)
 
-  // toast
-  const [toast, setToast] = useState({ visible: false, message: '' })
-  const showToast = useCallback((msg: string) => setToast({ visible: true, message: msg }), [])
-  const hideToast = useCallback(() => setToast({ visible: false, message: '' }), [])
+  // Qualifying fields (step 2)
+  const [selected, setSelected] = useState<string[]>([])
+  const [othersText, setOthersText] = useState('')
+  const [industry, setIndustry] = useState('')
+  const [qualifySubmitting, setQualifySubmitting] = useState(false)
+
+  const [waitlistNum, setWaitlistNum] = useState(0)
 
   // track quiz start (once)
   const quizStarted = useRef(false)
@@ -477,17 +359,6 @@ export default function QuizForm() {
     }
   }, [])
 
-  /* step 2 auto-advance on tap */
-  useEffect(() => {
-    if (step === 2 && teamSize) {
-      const t = setTimeout(() => {
-        setDirection(1)
-        setStep(3)
-      }, 400)
-      return () => clearTimeout(t)
-    }
-  }, [step, teamSize])
-
   /* toggle helpers */
   function toggleOption(opt: string) {
     setSelected((prev) =>
@@ -495,40 +366,8 @@ export default function QuizForm() {
     )
   }
 
-  /* navigation */
-  function goNext() {
-    if (step === 1) {
-      if (selected.length === 0) {
-        showToast('Select at least one option')
-        return
-      }
-      if (selected.includes('Others') && !othersText.trim()) {
-        showToast('Please describe what you want to automate')
-        return
-      }
-    }
-    if (step === 3) {
-      if (!industry) {
-        showToast('Pick your industry')
-        return
-      }
-      if (!revenueRange) {
-        showToast('Pick your revenue range')
-        return
-      }
-    }
-    trackQuizProgress(step, { selected_count: step === 1 ? selected.length : undefined })
-    setDirection(1)
-    setStep((s) => s + 1)
-  }
-
-  function goBack() {
-    setDirection(-1)
-    setStep((s) => s - 1)
-  }
-
-  /* submit */
-  async function handleSubmit() {
+  /* Step 1 submit: capture lead immediately */
+  async function handleContactSubmit() {
     setFormError('')
     if (!name.trim()) { setFormError('Name is required'); return }
     if (!phone.trim() || !validatePhone(phone)) { setFormError('Enter a valid 10-digit Indian mobile number'); return }
@@ -536,17 +375,12 @@ export default function QuizForm() {
 
     setSubmitting(true)
 
-    const areas = selected.map((s) => (s === 'Others' ? `Others: ${othersText}` : s))
     const payload = {
       name: name.trim(),
       phone: cleanPhone(phone),
       business_name: businessName.trim(),
-      automate_areas: areas.join(', '),
-      team_size: teamSize,
-      industry,
-      revenue_range: revenueRange,
       whatsapp_consent: whatsappConsent,
-      source: 'automation-lp-v4',
+      source: 'automation-lp-v5',
       event_id: `lead_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
       client_user_agent: navigator.userAgent,
       page_url: window.location.href,
@@ -558,34 +392,55 @@ export default function QuizForm() {
     }
 
     // localStorage backup
-    try {
-      localStorage.setItem(
-        `zippy_automation_lead_${Date.now()}`,
-        JSON.stringify(payload),
-      )
-    } catch { /* silent */ }
+    try { localStorage.setItem(`zippy_lead_${Date.now()}`, JSON.stringify(payload)) } catch {}
 
-    // webhook (fetch first, sendBeacon as fallback)
+    // Push to API
     const url = 'https://zippyscale-3ajsaibi1-sandys-projects-60666aac.vercel.app/api/quiz'
     try {
-      await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
+      await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
     } catch {
-      try {
-        navigator.sendBeacon(url, new Blob([JSON.stringify(payload)], { type: 'application/json' }))
-      } catch { /* silent */ }
+      try { navigator.sendBeacon(url, new Blob([JSON.stringify(payload)], { type: 'application/json' })) } catch {}
     }
 
-    trackQuizSubmit({ lead_source: 'automation-lp-v4', event_id: payload.event_id })
+    trackQuizSubmit({ lead_source: 'automation-lp-v5', event_id: payload.event_id })
     const num = await getWaitlistNumber()
     setWaitlistNum(num)
     window.dispatchEvent(new Event('waitlist-updated'))
     setSubmitting(false)
-    setDone(true)
+    setDirection(1)
+    setPhase('qualify')
   }
+
+  /* Step 2 submit: enrich the lead */
+  async function handleQualifySubmit() {
+    setQualifySubmitting(true)
+
+    const areas = selected.map((s) => (s === 'Others' ? `Others: ${othersText}` : s))
+    const enrichPayload = {
+      phone: cleanPhone(phone),
+      automate_areas: areas.join(', '),
+      industry,
+      source: 'automation-lp-v5-enrich',
+      event_id: `enrich_${Date.now()}`,
+    }
+
+    const url = 'https://zippyscale-3ajsaibi1-sandys-projects-60666aac.vercel.app/api/quiz'
+    try {
+      await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(enrichPayload) })
+    } catch {}
+
+    setQualifySubmitting(false)
+    setDirection(1)
+    setPhase('done')
+  }
+
+  /* Skip step 2 */
+  function skipQualify() {
+    setDirection(1)
+    setPhase('done')
+  }
+
+  const currentStep = phase === 'contact' ? 1 : 2
 
   /* ── main render ────────────────────────────────── */
   return (
@@ -599,7 +454,7 @@ export default function QuizForm() {
             Find Out What You Can Automate
           </h2>
           <p className="text-[#9CA3AF]">
-            4 quick taps. Get a custom automation audit for your business.
+            2 quick steps. Get a custom automation audit for your business.
           </p>
         </ScrollReveal>
       </div>
@@ -610,15 +465,15 @@ export default function QuizForm() {
           <div className="absolute -inset-6 bg-[#D5EB4B]/15 rounded-[2rem] blur-3xl pointer-events-none" />
           {/* Card */}
           <div className="relative bg-white border-2 border-[#D5EB4B]/30 shadow-2xl shadow-[#D5EB4B]/10 rounded-2xl p-6 sm:p-8">
-          {done ? (
+          {phase === 'done' ? (
             <ThankYou waitlistNum={waitlistNum} />
           ) : (
             <>
-              <ProgressBar step={step} />
+              <ProgressBar step={currentStep} />
 
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
-                  key={step}
+                  key={phase}
                   custom={direction}
                   variants={slideVariants}
                   initial="enter"
@@ -626,30 +481,8 @@ export default function QuizForm() {
                   exit="exit"
                   transition={{ duration: 0.3, ease: 'easeInOut' }}
                 >
-                  {step === 1 && (
-                    <Step1Tasks
-                      selected={selected}
-                      othersText={othersText}
-                      onToggle={toggleOption}
-                      onOthersChange={setOthersText}
-                    />
-                  )}
-                  {step === 2 && (
-                    <Step2Team
-                      teamSize={teamSize}
-                      onSelect={setTeamSize}
-                    />
-                  )}
-                  {step === 3 && (
-                    <Step3Business
-                      industry={industry}
-                      revenueRange={revenueRange}
-                      onIndustryChange={setIndustry}
-                      onRevenueChange={setRevenueRange}
-                    />
-                  )}
-                  {step === 4 && (
-                    <Step4Contact
+                  {phase === 'contact' && (
+                    <StepContact
                       name={name}
                       phone={phone}
                       businessName={businessName}
@@ -661,49 +494,58 @@ export default function QuizForm() {
                       onConsentChange={setWhatsappConsent}
                     />
                   )}
+                  {phase === 'qualify' && (
+                    <StepQualify
+                      selected={selected}
+                      othersText={othersText}
+                      industry={industry}
+                      onToggle={toggleOption}
+                      onOthersChange={setOthersText}
+                      onIndustryChange={setIndustry}
+                    />
+                  )}
                 </motion.div>
               </AnimatePresence>
 
               {/* Navigation */}
               <div className="flex items-center justify-between mt-8">
-                {step > 1 ? (
-                  <button
-                    type="button"
-                    onClick={goBack}
-                    className="text-sm text-[#6B7280] hover:text-[#0A0A0F] transition-colors cursor-pointer"
-                  >
-                    &larr; Back
-                  </button>
+                {phase === 'contact' ? (
+                  <>
+                    <span />
+                    <button
+                      type="button"
+                      onClick={handleContactSubmit}
+                      disabled={submitting}
+                      className="flex-1 bg-[#D5EB4B] text-[#0c0c10] font-bold py-4 rounded-xl hover:brightness-110 transition-all disabled:opacity-60 cursor-pointer"
+                    >
+                      {submitting ? 'Submitting...' : 'Get My Free Audit'}
+                    </button>
+                  </>
                 ) : (
-                  <span />
+                  <>
+                    <button
+                      type="button"
+                      onClick={skipQualify}
+                      className="text-sm text-[#6B7280] hover:text-[#0A0A0F] transition-colors cursor-pointer"
+                    >
+                      Skip for now
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleQualifySubmit}
+                      disabled={qualifySubmitting}
+                      className="bg-[#D5EB4B] text-[#0c0c10] font-bold px-8 py-3 rounded-xl hover:brightness-110 transition-all disabled:opacity-60 cursor-pointer"
+                    >
+                      {qualifySubmitting ? 'Submitting...' : 'Submit Details'}
+                    </button>
+                  </>
                 )}
-
-                {step < 4 && step !== 2 ? (
-                  <button
-                    type="button"
-                    onClick={goNext}
-                    className="bg-[#D5EB4B] text-[#0c0c10] font-bold px-8 py-3 rounded-xl hover:brightness-110 transition-all cursor-pointer"
-                  >
-                    Next &rarr;
-                  </button>
-                ) : step === 4 ? (
-                  <button
-                    type="button"
-                    onClick={handleSubmit}
-                    disabled={submitting}
-                    className="flex-1 ml-4 bg-[#D5EB4B] text-[#0c0c10] font-bold py-4 rounded-xl hover:brightness-110 transition-all disabled:opacity-60 cursor-pointer"
-                  >
-                    {submitting ? 'Submitting...' : 'Get My Free Audit'}
-                  </button>
-                ) : null}
               </div>
             </>
           )}
           </div>
         </div>
       </ScrollReveal>
-
-      <Toast message={toast.message} visible={toast.visible} onDismiss={hideToast} />
     </section>
   )
 }

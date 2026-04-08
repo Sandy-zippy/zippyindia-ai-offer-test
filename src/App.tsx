@@ -16,6 +16,7 @@ import HowItWorks from './components/sections/HowItWorks'
 import ROICalculator from './components/sections/ROICalculator'
 import WhoIsThisFor from './components/sections/WhoIsThisFor'
 import FAQ from './components/sections/FAQ'
+import InstagramFeed from './components/sections/InstagramFeed'
 import QuizForm from './components/sections/QuizForm'
 import FinalCTA from './components/sections/FinalCTA'
 import MidPageCTA from './components/sections/MidPageCTA'
@@ -60,6 +61,7 @@ function AutomationHome() {
         <ROICalculator />
         <MidPageCTA variant="roi" />
         <FAQ />
+        <InstagramFeed />
         <FinalCTA />
         <QuizForm />
       </main>
