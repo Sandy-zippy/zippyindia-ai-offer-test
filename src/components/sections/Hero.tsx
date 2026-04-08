@@ -111,12 +111,14 @@ function HeroForm() {
     }
 
     try { localStorage.setItem(`zippy_lead_${Date.now()}`, JSON.stringify(payload)) } catch {}
-    try { await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }) }
-    catch { try { navigator.sendBeacon(API_URL, new Blob([JSON.stringify(payload)], { type: 'application/json' })) } catch {} }
+
+    // Fire API in background — don't wait for response
+    fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(() => {
+      try { navigator.sendBeacon(API_URL, new Blob([JSON.stringify(payload)], { type: 'application/json' })) } catch {}
+    })
 
     trackCTAClick('hero-form', 'Start My Free Audit')
     window.fbq?.('track', 'Lead', { content_name: 'Hero Form', content_category: 'hero_submission' })
-    // Signal to bottom QuizForm that contact was already captured
     try { localStorage.setItem('zippy_hero_submitted', 'true') } catch {}
     try { localStorage.setItem('zippy_hero_phone', cleanPhone(phone)) } catch {}
     setSubmitting(false)

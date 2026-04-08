@@ -412,13 +412,11 @@ export default function QuizForm() {
     // localStorage backup
     try { localStorage.setItem(`zippy_lead_${Date.now()}`, JSON.stringify(payload)) } catch {}
 
-    // Push to API
+    // Fire API in background — don't wait
     const url = 'https://script.google.com/macros/s/AKfycbzzacqtwW_Wfk3EB-4WmCQrNFK92yeT2ziRNJvV4Ujy_468HHwCRHiGN0OkxTMLZyKJKQ/exec'
-    try {
-      await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-    } catch {
+    fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(() => {
       try { navigator.sendBeacon(url, new Blob([JSON.stringify(payload)], { type: 'application/json' })) } catch {}
-    }
+    })
 
     trackQuizSubmit({ lead_source: 'automation-lp-v5', event_id: payload.event_id, step: 'contact' })
     trackQuizProgress(1, { step_name: 'contact_captured' })
@@ -443,10 +441,9 @@ export default function QuizForm() {
       event_id: `enrich_${Date.now()}`,
     }
 
+    // Fire in background
     const url = 'https://script.google.com/macros/s/AKfycbzzacqtwW_Wfk3EB-4WmCQrNFK92yeT2ziRNJvV4Ujy_468HHwCRHiGN0OkxTMLZyKJKQ/exec'
-    try {
-      await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(enrichPayload) })
-    } catch {}
+    fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(enrichPayload) }).catch(() => {})
 
     trackQuizProgress(2, { step_name: 'qualifying_complete', areas_count: selected.length, industry })
     setQualifySubmitting(false)
