@@ -213,7 +213,42 @@ function upsertGHLContact(data, score, leadTag, config) {
   if (code !== 200 && code !== 201) throw new Error('GHL ' + code + ': ' + res.getContentText())
 
   const result = JSON.parse(res.getContentText())
-  return { status: 'ok', contactId: result.contact ? result.contact.id : null }
+  var contactId = result.contact ? result.contact.id : null
+
+  // Create opportunity in pipeline
+  if (contactId) {
+    var oppPayload = {
+      locationId: config.GHL_LOCATION_ID,
+      pipelineId: 'aTzYNdImLeTlbuaGyUEw',
+      pipelineStageId: 'b06d3ff1-f951-4cfb-9f9b-7606b3a18ee0',
+      name: (data.name || 'Unknown') + ' — AI Automation Audit',
+      status: 'open',
+      monetaryValue: 0,
+      contactId: contactId,
+      assignedTo: config.GHL_BHARGAV_ID,
+    }
+
+    var oppRes = UrlFetchApp.fetch('https://services.leadconnectorhq.com/opportunities/', {
+      method: 'post',
+      headers: {
+        'Authorization': 'Bearer ' + config.GHL_PIT,
+        'Version': '2021-07-28',
+        'Content-Type': 'application/json',
+      },
+      payload: JSON.stringify(oppPayload),
+      muteHttpExceptions: true,
+    })
+
+    var oppCode = oppRes.getResponseCode()
+    var oppBody = oppRes.getContentText()
+    if (oppCode !== 200 && oppCode !== 201) {
+      return { status: 'ok', contactId: contactId, oppError: oppCode + ': ' + oppBody }
+    }
+    var oppResult = JSON.parse(oppBody)
+    return { status: 'ok', contactId: contactId, opportunityId: oppResult.opportunity ? oppResult.opportunity.id : null }
+  }
+
+  return { status: 'ok', contactId: contactId }
 }
 
 // ── Google Sheets Backup ──
