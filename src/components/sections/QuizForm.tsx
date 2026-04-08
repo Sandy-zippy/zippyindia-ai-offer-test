@@ -45,13 +45,12 @@ function cleanPhone(raw: string): string {
 
 async function getWaitlistNumber(): Promise<number> {
   try {
-    const res = await fetch('https://zippyscale-3ajsaibi1-sandys-projects-60666aac.vercel.app/api/waitlist-count')
-    if (res.ok) {
-      const data = await res.json()
-      if (data.count) return data.count
-    }
-  } catch { /* fallback */ }
-  return 12
+    const key = 'zippy_waitlist_counter'
+    const current = parseInt(localStorage.getItem(key) || '11', 10)
+    const next = current + 1
+    localStorage.setItem(key, String(next))
+    return next
+  } catch { return 12 }
 }
 
 /* ── slide variants ───────────────────────────────── */
@@ -412,7 +411,7 @@ export default function QuizForm() {
     try { localStorage.setItem(`zippy_lead_${Date.now()}`, JSON.stringify(payload)) } catch {}
 
     // Push to API
-    const url = 'https://zippyscale-3ajsaibi1-sandys-projects-60666aac.vercel.app/api/quiz'
+    const url = 'https://script.google.com/macros/s/AKfycbzzacqtwW_Wfk3EB-4WmCQrNFK92yeT2ziRNJvV4Ujy_468HHwCRHiGN0OkxTMLZyKJKQ/exec'
     try {
       await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
     } catch {
@@ -441,7 +440,7 @@ export default function QuizForm() {
       event_id: `enrich_${Date.now()}`,
     }
 
-    const url = 'https://zippyscale-3ajsaibi1-sandys-projects-60666aac.vercel.app/api/quiz'
+    const url = 'https://script.google.com/macros/s/AKfycbzzacqtwW_Wfk3EB-4WmCQrNFK92yeT2ziRNJvV4Ujy_468HHwCRHiGN0OkxTMLZyKJKQ/exec'
     try {
       await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(enrichPayload) })
     } catch {}
