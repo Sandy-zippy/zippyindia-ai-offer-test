@@ -116,6 +116,9 @@ function HeroForm() {
 
     trackCTAClick('hero-form', 'Start My Free Audit')
     window.fbq?.('track', 'Lead', { content_name: 'Hero Form', content_category: 'hero_submission' })
+    // Signal to bottom QuizForm that contact was already captured
+    try { localStorage.setItem('zippy_hero_submitted', 'true') } catch {}
+    try { localStorage.setItem('zippy_hero_phone', cleanPhone(phone)) } catch {}
     setSubmitting(false)
     setPhase('qualify')
   }

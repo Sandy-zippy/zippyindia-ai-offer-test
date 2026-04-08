@@ -344,7 +344,9 @@ function ThankYou({ waitlistNum }: { waitlistNum: number }) {
 /* ── main component ──────────────────────────────── */
 
 export default function QuizForm() {
-  const [phase, setPhase] = useState<'contact' | 'qualify' | 'done'>('contact')
+  // If hero form already submitted, skip to qualify
+  const heroAlreadySubmitted = typeof window !== 'undefined' && localStorage.getItem('zippy_hero_submitted') === 'true'
+  const [phase, setPhase] = useState<'contact' | 'qualify' | 'done'>(heroAlreadySubmitted ? 'qualify' : 'contact')
   const [direction, setDirection] = useState(1)
 
   // Contact fields (step 1)
@@ -434,7 +436,7 @@ export default function QuizForm() {
 
     const areas = selected.map((s) => (s === 'Others' ? `Others: ${othersText}` : s))
     const enrichPayload = {
-      phone: cleanPhone(phone),
+      phone: cleanPhone(phone) || localStorage.getItem('zippy_hero_phone') || '',
       automate_areas: areas.join(', '),
       industry,
       source: 'automation-lp-v5-enrich',
