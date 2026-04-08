@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import AnimatedCounter from '../ui/AnimatedCounter'
 import { trackEvent, trackCTAClick } from '../../lib/tracking'
@@ -35,7 +35,7 @@ function getHeadline(): { main: string; sub: string } {
       }
     case 'solution-aware':
       return {
-        main: 'Free AI Automation Audit. We Map Your Entire Lead Flow in 24 Hours.',
+        main: 'Free AI Automation Audit. We Map Your Entire Lead Flow in 48 Hours.',
         sub: 'Custom roadmap. Zero cost. Zero obligation.',
       }
     default:
@@ -46,20 +46,107 @@ function getHeadline(): { main: string; sub: string } {
   }
 }
 
+/* ── Hero Form (above the fold) ──────────────────── */
+
+function HeroForm() {
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [businessName, setBusinessName] = useState('')
+  const [whatsappConsent, setWhatsappConsent] = useState(true)
+  const [formError, setFormError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [done, setDone] = useState(false)
+
+  const validatePhone = (raw: string) => /^[6-9]\d{9}$/.test(raw.replace(/[\s\-+]/g, '').replace(/^91/, ''))
+  const cleanPhone = (raw: string) => raw.replace(/[\s\-+]/g, '').replace(/^91/, '')
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setFormError('')
+    if (!name.trim()) { setFormError('Name is required'); return }
+    if (!phone.trim() || !validatePhone(phone)) { setFormError('Valid 10-digit mobile number required'); return }
+    if (!businessName.trim()) { setFormError('Business name is required'); return }
+    setSubmitting(true)
+
+    const payload = {
+      name: name.trim(), phone: cleanPhone(phone), business_name: businessName.trim(),
+      whatsapp_consent: whatsappConsent, source: 'hero-form-v5',
+      event_id: `lead_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      client_user_agent: navigator.userAgent, page_url: window.location.href,
+      visit_count: parseInt(localStorage.getItem('zippy_visit_count') || '1', 10),
+      time_on_page: Math.round((Date.now() - ((window as any).__pageLoadTime || Date.now())) / 1000),
+    }
+
+    try { localStorage.setItem(`zippy_lead_${Date.now()}`, JSON.stringify(payload)) } catch {}
+
+    const url = 'https://zippyscale-3ajsaibi1-sandys-projects-60666aac.vercel.app/api/quiz'
+    try {
+      await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+    } catch {
+      try { navigator.sendBeacon(url, new Blob([JSON.stringify(payload)], { type: 'application/json' })) } catch {}
+    }
+
+    trackCTAClick('hero-form', 'Get Your Free Audit')
+    setSubmitting(false)
+    setDone(true)
+  }
+
+  if (done) {
+    return (
+      <div className="bg-white border border-[#E5E7EB] shadow-xl rounded-2xl p-6 text-center">
+        <div className="w-12 h-12 rounded-full bg-[#D5EB4B] flex items-center justify-center mx-auto mb-4">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M8 16L14 22L24 10" stroke="#0c0c10" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        </div>
+        <h3 className="text-xl font-bold text-[#0A0A0F] mb-2">You're in!</h3>
+        <p className="text-sm text-[#6B7280]">Check your WhatsApp. We'll send your audit within 48 hours.</p>
+        <a href="#quiz" className="inline-block mt-4 text-sm text-[#B8CF2E] hover:underline">Help us customize your audit below</a>
+      </div>
+    )
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="bg-white border border-[#E5E7EB] shadow-xl rounded-2xl p-6">
+      <h3 className="text-lg font-bold text-[#0A0A0F] mb-1" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+        Get Your Free Audit
+      </h3>
+      <p className="text-sm text-[#6B7280] mb-5">Takes 30 seconds. Custom roadmap in 48 hours.</p>
+      <div className="flex flex-col gap-3">
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name"
+          className="w-full bg-white border border-[#E5E7EB] rounded-lg px-4 py-3 text-[#0A0A0F] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors" />
+        <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="WhatsApp number"
+          className="w-full bg-white border border-[#E5E7EB] rounded-lg px-4 py-3 text-[#0A0A0F] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors" />
+        <input type="text" value={businessName} onChange={(e) => setBusinessName(e.target.value)} placeholder="Business name"
+          className="w-full bg-white border border-[#E5E7EB] rounded-lg px-4 py-3 text-[#0A0A0F] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors" />
+      </div>
+      <button type="button" onClick={() => setWhatsappConsent(!whatsappConsent)}
+        className="flex items-center gap-2 mt-3 cursor-pointer bg-transparent border-none p-0">
+        <span className={`flex-shrink-0 w-4 h-4 rounded border-2 flex items-center justify-center transition-colors ${whatsappConsent ? 'border-[#D5EB4B] bg-[#D5EB4B]' : 'border-[#D1D5DB]'}`}>
+          {whatsappConsent && <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="#0c0c10" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>}
+        </span>
+        <span className="text-xs text-[#6B7280]">Send my roadmap on WhatsApp</span>
+      </button>
+      {formError && <p className="mt-2 text-sm text-[#EF4444]">{formError}</p>}
+      <button type="submit" disabled={submitting}
+        className="w-full mt-4 bg-[#D5EB4B] text-[#0c0c10] font-bold py-3.5 rounded-xl hover:brightness-110 transition-all disabled:opacity-60 cursor-pointer text-base">
+        {submitting ? 'Submitting...' : 'Get My Free Audit'}
+      </button>
+      <p className="text-center text-xs text-[#6B7280] mt-3">No payment. No obligation. No spam.</p>
+    </form>
+  )
+}
+
+/* ── Hero Section ────────────────────────────────── */
+
 export default function Hero() {
   useEffect(() => {
     const utmContent = new URLSearchParams(window.location.search).get('utm_content') || 'brand-aware'
     trackEvent('hero_view', { awareness_level: utmContent })
   }, [])
 
-  const scrollToQuiz = () => {
-    document.getElementById('quiz')?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   const { main, sub } = getHeadline()
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#FFFDF7]">
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-[#FFFDF7]">
       {/* Subtle dot grid overlay */}
       <div
         className="absolute inset-0 opacity-[0.06]"
@@ -69,92 +156,74 @@ export default function Hero() {
         }}
       />
 
-      {/* Content */}
+      {/* Content — 2 column on desktop */}
       <motion.div
-        className="relative z-10 text-center px-4 py-20 max-w-5xl mx-auto"
+        className="relative z-10 px-4 py-20 max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center"
         variants={stagger}
         initial="hidden"
         animate="visible"
       >
-        {/* Badge */}
-        <motion.div variants={fadeUp} transition={{ duration: 0.5 }}>
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border border-[#B8CF2E] text-[#B8CF2E] bg-[rgba(184,207,46,0.08)]">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+        {/* LEFT: Copy */}
+        <div>
+          {/* Badge */}
+          <motion.div variants={fadeUp} transition={{ duration: 0.5 }}>
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border border-[#B8CF2E] text-[#B8CF2E] bg-[rgba(184,207,46,0.08)]">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+              </span>
+              For ₹50L+ Indian Businesses
             </span>
-            For ₹50L+ Indian Businesses
-          </span>
-        </motion.div>
+          </motion.div>
 
-        {/* Headline */}
-        <motion.h1
-          variants={fadeUp}
-          transition={{ duration: 0.5 }}
-          className="mt-8 text-5xl md:text-7xl font-bold max-w-4xl mx-auto leading-[1.1] text-[#0A0A0F]"
-          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-        >
-          {main}
-        </motion.h1>
+          {/* Headline */}
+          <motion.h1
+            variants={fadeUp}
+            transition={{ duration: 0.5 }}
+            className="mt-8 text-4xl md:text-5xl lg:text-6xl font-bold max-w-xl leading-[1.1] text-[#0A0A0F]"
+            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+          >
+            {main}
+          </motion.h1>
 
-        {/* Subheadline */}
-        <motion.p
-          variants={fadeUp}
-          transition={{ duration: 0.5 }}
-          className="mt-6 text-lg md:text-xl text-[#1F2937] max-w-2xl mx-auto"
-          style={{ fontFamily: "'Inter', sans-serif" }}
-        >
-          {sub}
-        </motion.p>
+          {/* Subheadline */}
+          <motion.p
+            variants={fadeUp}
+            transition={{ duration: 0.5 }}
+            className="mt-6 text-lg text-[#1F2937] max-w-lg"
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            {sub}
+          </motion.p>
 
-        {/* Stats row */}
-        <motion.div
-          variants={fadeUp}
-          transition={{ duration: 0.5 }}
-          className="mt-10 flex flex-wrap items-center justify-center gap-6 md:gap-10"
-        >
-          {stats.map((stat, i) => (
-            <div key={i} className="flex items-baseline gap-1.5">
-              {stat.label && (
+          {/* Stats row */}
+          <motion.div
+            variants={fadeUp}
+            transition={{ duration: 0.5 }}
+            className="mt-8 flex flex-wrap items-center gap-6"
+          >
+            {stats.map((stat, i) => (
+              <div key={i} className="flex items-baseline gap-1.5">
                 <span className="text-sm text-[#1F2937]" style={{ fontFamily: "'Inter', sans-serif" }}>
                   {stat.label}
                 </span>
-              )}
-              <AnimatedCounter
-                target={stat.target}
-                prefix={stat.prefix}
-                suffix={stat.suffix}
-                className="text-2xl md:text-3xl font-bold text-[#B8CF2E]"
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
-              />
-            </div>
-          ))}
-        </motion.div>
+                <AnimatedCounter
+                  target={stat.target}
+                  prefix={stat.prefix}
+                  suffix={stat.suffix}
+                  className="text-2xl md:text-3xl font-bold text-[#B8CF2E]"
+                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                />
+              </div>
+            ))}
+          </motion.div>
+        </div>
 
-        {/* Primary CTA */}
-        <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mt-12">
-          <motion.a
-            href="#quiz"
-            onClick={() => trackCTAClick('hero-cta', 'Get Your Free Audit')}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-block font-bold rounded-xl px-10 py-5 text-lg bg-[#D5EB4B] text-[#0c0c10] shadow-[0_4px_20px_rgba(213,235,75,0.3)] hover:shadow-[0_6px_30px_rgba(213,235,75,0.45)] transition-shadow"
-          >
-            Get Your Free Audit
-          </motion.a>
-        </motion.div>
-
-        {/* Secondary CTA */}
-        <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mt-4">
-          <button
-            onClick={scrollToQuiz}
-            className="text-sm text-[#1F2937] hover:underline hover:text-[#B8CF2E] transition-colors cursor-pointer bg-transparent border-none"
-          >
-            Only 10 businesses selected this quarter. Zero cost. Zero obligation.
-          </button>
+        {/* RIGHT: Form */}
+        <motion.div variants={fadeUp} transition={{ duration: 0.5 }}>
+          <HeroForm />
         </motion.div>
       </motion.div>
-
     </section>
   )
 }
