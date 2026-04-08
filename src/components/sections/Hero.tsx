@@ -88,7 +88,9 @@ function HeroForm() {
       try { navigator.sendBeacon(url, new Blob([JSON.stringify(payload)], { type: 'application/json' })) } catch {}
     }
 
-    trackCTAClick('hero-form', 'Get Your Free Audit')
+    trackCTAClick('hero-form', 'Start My Free Audit')
+    // Fire Meta Pixel Lead event for hero form conversions
+    window.fbq?.('track', 'Lead', { content_name: 'Hero Form', content_category: 'hero_submission' })
     setSubmitting(false)
     setDone(true)
   }

@@ -418,7 +418,8 @@ export default function QuizForm() {
       try { navigator.sendBeacon(url, new Blob([JSON.stringify(payload)], { type: 'application/json' })) } catch {}
     }
 
-    trackQuizSubmit({ lead_source: 'automation-lp-v5', event_id: payload.event_id })
+    trackQuizSubmit({ lead_source: 'automation-lp-v5', event_id: payload.event_id, step: 'contact' })
+    trackQuizProgress(1, { step_name: 'contact_captured' })
     const num = await getWaitlistNumber()
     setWaitlistNum(num)
     window.dispatchEvent(new Event('waitlist-updated'))
@@ -445,6 +446,7 @@ export default function QuizForm() {
       await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(enrichPayload) })
     } catch {}
 
+    trackQuizProgress(2, { step_name: 'qualifying_complete', areas_count: selected.length, industry })
     setQualifySubmitting(false)
     setDirection(1)
     setPhase('done')
