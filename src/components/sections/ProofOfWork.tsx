@@ -3,8 +3,8 @@ import AnimatedCounter from '../ui/AnimatedCounter'
 
 const stats = [
   { target: 1.6, prefix: '₹', suffix: ' Cr+', label: 'Saved across clients', decimals: 1 },
-  { target: 8000, prefix: '', suffix: '+', label: 'Manual hours eliminated', decimals: 0 },
-  { target: 20, prefix: '', suffix: '+', label: 'Indian businesses automated', decimals: 0 },
+  { target: 8000, prefix: '', suffix: '+', label: 'Manual hours saved across 23 clients in 6 months', decimals: 0 },
+  { target: 23, prefix: '', suffix: '+', label: '23 businesses across 8 industries', decimals: 0 },
   { target: 10, prefix: '', suffix: 'x', label: 'Output without new hires', decimals: 0 },
 ]
 
@@ -14,7 +14,7 @@ export default function ProofOfWork() {
       <div className="max-w-5xl mx-auto text-center">
         <ScrollReveal>
           <p className="font-mono text-xs uppercase tracking-widest text-[#B8CF2E] mb-4">
-            Proof of Work
+            Our Track Record
           </p>
           <h2 className="font-bold text-3xl md:text-4xl text-[#0A0A0F] mb-12">
             Results From the Last 6 Months

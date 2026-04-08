@@ -191,7 +191,7 @@ export default function PainSection() {
                   onClick={() => trackCTAClick('pain-calculator', 'Get Your Free Audit')}
                   className="inline-block font-bold rounded-xl px-8 py-3 text-sm bg-[#D5EB4B] text-[#0c0c10] hover:brightness-110 transition-all"
                 >
-                  Get Your Free Audit
+                  {totalCost > 0 ? `Stop Losing ₹${totalCost}L/Year` : 'Get Your Free Audit'}
                 </a>
               </div>
             </motion.div>

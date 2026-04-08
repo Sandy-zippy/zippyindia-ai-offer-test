@@ -40,8 +40,8 @@ function getHeadline(): { main: string; sub: string } {
       }
     default:
       return {
-        main: 'Still Running Your Business on WhatsApp Groups and Excel?',
-        sub: 'We build AI automations that handle leads, follow-ups, reports, and ops. Same team, 10x output.',
+        main: 'Your Team Wastes 20+ Hours a Week on Work AI Can Do in Seconds',
+        sub: 'Get a free audit that shows exactly where you\'re bleeding time and money. Same team, 10x output.',
       }
   }
 }
@@ -83,7 +83,7 @@ export default function Hero() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
             </span>
-            For ₹5Cr+ Indian Businesses
+            For ₹50L+ Indian Businesses
           </span>
         </motion.div>
 

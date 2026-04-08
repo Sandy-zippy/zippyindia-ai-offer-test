@@ -166,7 +166,7 @@ export default function ROICalculator() {
                 onChange={setAvgSalary}
               />
               <SliderInput
-                label="Manual Hours/Week"
+                label="Hours/Week on Repetitive Tasks"
                 value={manualHours}
                 min={5}
                 max={40}
@@ -200,7 +200,7 @@ export default function ROICalculator() {
                 prefix="₹"
                 suffix="L"
                 label="Potential Revenue Growth"
-                sublabel="Reinvested productivity"
+                sublabel="When your team sells instead of doing data entry"
                 color="text-[#F59E0B]"
               />
             </div>
@@ -209,6 +209,8 @@ export default function ROICalculator() {
 
         {/* Divider */}
         <div className="border-t border-[#3E3E48] mb-12" />
+
+        {/* Reinvested productivity sublabel fix */}
 
         {/* Comparison table */}
         <ScrollReveal delay={0.15}>
@@ -253,6 +255,18 @@ export default function ROICalculator() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.25}>
+          <div className="text-center mt-12">
+            <a
+              href="#quiz"
+              className="inline-block font-bold rounded-xl px-10 py-5 text-lg bg-[#D5EB4B] text-[#0c0c10] hover:brightness-110 transition-all"
+            >
+              Stop Leaving ₹{annualSavings}L on the Table
+            </a>
+            <p className="text-[#9CA3AF] text-xs mt-3">2-minute quiz. Custom roadmap in 48 hours.</p>
           </div>
         </ScrollReveal>
       </div>

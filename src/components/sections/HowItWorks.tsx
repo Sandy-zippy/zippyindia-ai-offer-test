@@ -33,8 +33,8 @@ const steps = [
   },
   {
     num: 3,
-    title: 'We Build. You Scale.',
-    desc: 'If selected, we build and deploy your automations. Live in 2 to 4 weeks. Your team does 10x the work.',
+    title: 'Your Automations Go Live',
+    desc: 'We build and deploy your automations. Live in 2 to 4 weeks. Your team does 10x the work.',
   },
 ]
 

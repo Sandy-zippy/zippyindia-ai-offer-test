@@ -262,7 +262,7 @@ function Step3Business({
 
         {/* Revenue — tappable cards */}
         <div>
-          <label className="block text-sm text-[#6B7280] mb-3">Monthly revenue range</label>
+          <label className="block text-sm text-[#6B7280] mb-3">Annual revenue range</label>
           <div className="flex flex-col gap-2">
             {revenueOptions.map((opt) => {
               const active = revenueRange === opt.label
@@ -314,7 +314,7 @@ function Step4Contact({
   return (
     <div>
       <h3 className="text-lg font-semibold text-[#0A0A0F] mb-1">
-        Almost done. Where should we send your audit?
+        Last step. Where do we send your audit?
       </h3>
       <p className="text-sm text-[#6B7280] mb-6">We'll WhatsApp your custom automation roadmap.</p>
       <div className="flex flex-col gap-4">

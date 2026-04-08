@@ -17,7 +17,7 @@ export default function StickyCTA({ isQuizVisible }: StickyCTAProps) {
         Get Your Free Audit
       </a>
       <p className="text-center text-[#6B7280] text-xs mt-2">
-        No commitment. We map your processes for free.
+        Free audit. Custom roadmap in 48 hours.
       </p>
     </div>
   )

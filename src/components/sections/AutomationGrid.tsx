@@ -76,7 +76,7 @@ const cards = [
   {
     title: 'Inventory & Orders',
     before: 'Stock-outs discovered when a customer complains. Reorders are guesswork.',
-    after: 'Real-time tracking, auto-reorder points, fulfillment workflows.',
+    after: 'Stock levels update automatically. Reorders trigger before you run out. Customers never hear "out of stock."',
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D5EB4B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
@@ -88,7 +88,7 @@ const cards = [
   {
     title: 'HR & Payroll',
     before: 'Leave tracking in Excel. Payroll takes 2 days. Compliance is a prayer.',
-    after: 'Onboarding, attendance, payroll, compliance. All automated.',
+    after: 'New hire to first payslip in 2 clicks. Leave tracking, attendance, compliance. Zero spreadsheets.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D5EB4B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -157,7 +157,7 @@ export default function AutomationGrid() {
             Tap Any Card to See What Changes
           </h2>
           <p className="text-center text-sm text-[#9CA3AF] mb-12">
-            8 things your team does manually. 8 things AI handles instantly.
+            Tap any card to see what changes when AI handles it.
           </p>
         </ScrollReveal>
 

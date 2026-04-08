@@ -9,7 +9,6 @@ import StickyCTA from './components/layout/StickyCTA'
 import Divider from './components/ui/Divider'
 import VisitTracker from './components/ui/VisitTracker'
 import Hero from './components/sections/Hero'
-import AwarenessBlocks from './components/sections/AwarenessBlocks'
 import ProofOfWork from './components/sections/ProofOfWork'
 import PainSection from './components/sections/PainSection'
 import AutomationGrid from './components/sections/AutomationGrid'
@@ -17,7 +16,6 @@ import HowItWorks from './components/sections/HowItWorks'
 import ROICalculator from './components/sections/ROICalculator'
 import WhoIsThisFor from './components/sections/WhoIsThisFor'
 import FAQ from './components/sections/FAQ'
-import InstagramFeed from './components/sections/InstagramFeed'
 import QuizForm from './components/sections/QuizForm'
 import FinalCTA from './components/sections/FinalCTA'
 import MidPageCTA from './components/sections/MidPageCTA'
@@ -51,24 +49,19 @@ function AutomationHome() {
       <main>
         <Hero />
         <VisitTracker />
-        <AwarenessBlocks />
-        <Divider />
+        <WhoIsThisFor />
         <PainSection />
-        <MidPageCTA />
+        <MidPageCTA variant="pain" />
         <ProofOfWork />
         <Divider />
         <HowItWorks />
-        <MidPageCTA />
+        <MidPageCTA variant="process" />
         <AutomationGrid />
         <ROICalculator />
-        <MidPageCTA />
-        <WhoIsThisFor />
-        <Divider />
-        <InstagramFeed />
-        <Divider />
+        <MidPageCTA variant="roi" />
         <FAQ />
-        <QuizForm />
         <FinalCTA />
+        <QuizForm />
       </main>
       <Footer />
       <StickyCTA isQuizVisible={isQuizVisible} />

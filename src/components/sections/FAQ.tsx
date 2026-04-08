@@ -29,11 +29,11 @@ const faqs = [
   },
   {
     q: 'What does execution cost after the free audit?',
-    a: 'The audit is completely free with no strings attached. If you want us to execute, pricing depends on the scope and complexity of automations. It is a one-time build cost plus a small monthly maintenance fee. Most clients save 5 to 8x what they invest within the first 90 days. The audit report includes exact pricing for your specific case.',
+    a: 'The audit is completely free with no strings attached. If you want us to execute, pricing depends on the scope and complexity of automations. It is a one-time build cost plus a small monthly maintenance fee. Most clients save 5 to 8x what they invest within the first 90 days. The audit report includes exact pricing for your specific case. Most clients invest ₹1-3L for their first automation package and save 5-8x within 90 days.',
   },
   {
     q: 'Why is the audit free?',
-    a: 'We are selecting 10 businesses this quarter to build deep case studies that prove our automation systems work. You get a comprehensive audit at zero cost. We get documented proof of results. This is a limited offer. Once we have our 10 case studies, the audit goes back to being a paid service.',
+    a: 'We are selecting 10 businesses this quarter to build deep case studies that prove our automation systems work. You get a comprehensive audit at zero cost. We get documented proof of results. This is a limited offer.',
   },
   {
     q: 'I have tried agencies before and they did not deliver. How are you different?',
@@ -56,7 +56,7 @@ export default function FAQ() {
             COMMON QUESTIONS
           </p>
           <h2 className="mx-auto mb-12 max-w-xl text-center text-3xl font-bold text-[#0A0A0F] sm:text-4xl">
-            Before You Decide
+            Questions
           </h2>
         </ScrollReveal>
 

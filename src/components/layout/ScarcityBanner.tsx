@@ -44,7 +44,7 @@ export default function ScarcityBanner() {
   return (
     <div className="sticky top-0 z-[60] flex items-center justify-center h-12 bg-[#D5EB4B] px-4">
       <p className="font-['Space_Grotesk'] font-semibold text-sm text-[#0c0c10] text-center">
-        Only 10 businesses selected this quarter &middot; <span className="font-bold text-base">{counter}</span> already applied &middot; Free audit included
+        {Math.max(10 - Math.min(counter, 9), 1)} spots remaining this quarter &middot; <span className="font-bold text-base">{counter}</span> businesses already applied
       </p>
       <button
         onClick={dismiss}

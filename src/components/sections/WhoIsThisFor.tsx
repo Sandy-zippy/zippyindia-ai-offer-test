@@ -5,6 +5,16 @@ import { trackCTAClick } from '../../lib/tracking'
 
 const cards = [
   {
+    id: 'salary',
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="12" y1="1" x2="12" y2="23" />
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+      </svg>
+    ),
+    text: 'Your salary bill keeps climbing but output stays flat',
+  },
+  {
     id: 'revenue',
     icon: (
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -12,7 +22,7 @@ const cards = [
         <polyline points="16 7 22 7 22 13" />
       </svg>
     ),
-    text: 'You do ₹50L+ revenue with a growing team',
+    text: 'You do ₹50L+ revenue and need systems, not more people',
   },
   {
     id: 'whatsapp',
@@ -34,16 +44,6 @@ const cards = [
       </svg>
     ),
     text: 'You want 3x output without hiring 5 more people',
-  },
-  {
-    id: 'salary',
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="12" y1="1" x2="12" y2="23" />
-        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-      </svg>
-    ),
-    text: 'Your salary bill keeps climbing but output stays flat',
   },
 ]
 

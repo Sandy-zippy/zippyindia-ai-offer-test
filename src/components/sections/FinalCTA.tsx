@@ -17,9 +17,7 @@ export default function FinalCTA() {
           </h2>
 
           <p className="mt-6 text-lg text-[#9CA3AF] max-w-2xl mx-auto">
-            10 businesses get a free, custom AI automation audit this quarter.
-            We review your operations, identify every rupee you're wasting,
-            and deliver a roadmap to fix it. Zero cost. Zero obligation.
+            We review your operations and deliver a custom automation roadmap. Free for 10 businesses this quarter.
           </p>
 
           <div className="mt-10">
