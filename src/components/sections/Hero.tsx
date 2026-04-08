@@ -51,6 +51,7 @@ function getHeadline(): { main: string; sub: string } {
 function HeroForm() {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
   const [businessName, setBusinessName] = useState('')
   const [whatsappConsent, setWhatsappConsent] = useState(true)
   const [formError, setFormError] = useState('')
@@ -65,11 +66,12 @@ function HeroForm() {
     setFormError('')
     if (!name.trim()) { setFormError('Name is required'); return }
     if (!phone.trim() || !validatePhone(phone)) { setFormError('Valid 10-digit mobile number required'); return }
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { setFormError('Valid email address required'); return }
     if (!businessName.trim()) { setFormError('Business name is required'); return }
     setSubmitting(true)
 
     const payload = {
-      name: name.trim(), phone: cleanPhone(phone), business_name: businessName.trim(),
+      name: name.trim(), phone: cleanPhone(phone), email: email.trim(), business_name: businessName.trim(),
       whatsapp_consent: whatsappConsent, source: 'hero-form-v5',
       event_id: `lead_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
       client_user_agent: navigator.userAgent, page_url: window.location.href,
@@ -114,6 +116,8 @@ function HeroForm() {
         <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name"
           className="w-full bg-white border border-[#E5E7EB] rounded-lg px-4 py-3 text-[#0A0A0F] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors" />
         <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="WhatsApp number"
+          className="w-full bg-white border border-[#E5E7EB] rounded-lg px-4 py-3 text-[#0A0A0F] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors" />
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email address"
           className="w-full bg-white border border-[#E5E7EB] rounded-lg px-4 py-3 text-[#0A0A0F] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors" />
         <input type="text" value={businessName} onChange={(e) => setBusinessName(e.target.value)} placeholder="Business name"
           className="w-full bg-white border border-[#E5E7EB] rounded-lg px-4 py-3 text-[#0A0A0F] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors" />

@@ -83,21 +83,25 @@ function ProgressBar({ step }: { step: number }) {
 function StepContact({
   name,
   phone,
+  email,
   businessName,
   whatsappConsent,
   formError,
   onNameChange,
   onPhoneChange,
+  onEmailChange,
   onBusinessNameChange,
   onConsentChange,
 }: {
   name: string
   phone: string
+  email: string
   businessName: string
   whatsappConsent: boolean
   formError: string
   onNameChange: (val: string) => void
   onPhoneChange: (val: string) => void
+  onEmailChange: (val: string) => void
   onBusinessNameChange: (val: string) => void
   onConsentChange: (val: boolean) => void
 }) {
@@ -125,6 +129,16 @@ function StepContact({
             value={phone}
             onChange={(e) => onPhoneChange(e.target.value)}
             placeholder="98765 43210"
+            className="w-full bg-white border border-[#E5E7EB] rounded-lg p-4 text-[#0A0A0F] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors"
+          />
+        </div>
+        <div>
+          <label className="block text-sm text-[#6B7280] mb-1">Email Address</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => onEmailChange(e.target.value)}
+            placeholder="Email address"
             className="w-full bg-white border border-[#E5E7EB] rounded-lg p-4 text-[#0A0A0F] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors"
           />
         </div>
@@ -337,6 +351,7 @@ export default function QuizForm() {
   // Contact fields (step 1)
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
   const [businessName, setBusinessName] = useState('')
   const [whatsappConsent, setWhatsappConsent] = useState(true)
   const [formError, setFormError] = useState('')
@@ -371,6 +386,7 @@ export default function QuizForm() {
     setFormError('')
     if (!name.trim()) { setFormError('Name is required'); return }
     if (!phone.trim() || !validatePhone(phone)) { setFormError('Enter a valid 10-digit Indian mobile number'); return }
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { setFormError('Valid email address required'); return }
     if (!businessName.trim()) { setFormError('Business name is required'); return }
 
     setSubmitting(true)
@@ -378,6 +394,7 @@ export default function QuizForm() {
     const payload = {
       name: name.trim(),
       phone: cleanPhone(phone),
+      email: email.trim(),
       business_name: businessName.trim(),
       whatsapp_consent: whatsappConsent,
       source: 'automation-lp-v5',
@@ -485,11 +502,13 @@ export default function QuizForm() {
                     <StepContact
                       name={name}
                       phone={phone}
+                      email={email}
                       businessName={businessName}
                       whatsappConsent={whatsappConsent}
                       formError={formError}
                       onNameChange={setName}
                       onPhoneChange={setPhone}
+                      onEmailChange={setEmail}
                       onBusinessNameChange={setBusinessName}
                       onConsentChange={setWhatsappConsent}
                     />
