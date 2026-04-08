@@ -70,7 +70,7 @@ function doPost(e) {
   }
 }
 
-// Also handle GET for testing
+// Health check
 function doGet() {
   return ContentService.createTextOutput(JSON.stringify({
     status: 'ok',
