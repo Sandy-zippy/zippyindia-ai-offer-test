@@ -26,7 +26,7 @@ export default function FinalCTA() {
               onClick={() => trackCTAClick('final-cta', 'Claim Your Free Audit')}
               className="inline-block font-bold rounded-xl px-10 py-5 text-lg bg-[#D5EB4B] text-[#0c0c10] shadow-[0_0_30px_rgba(213,235,75,0.2)] hover:shadow-[0_0_50px_rgba(213,235,75,0.35)] transition-shadow"
             >
-              Claim Your Free Audit
+              Yes, Audit My Business for Free
             </a>
           </div>
 

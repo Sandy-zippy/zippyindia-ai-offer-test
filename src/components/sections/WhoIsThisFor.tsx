@@ -144,7 +144,7 @@ export default function WhoIsThisFor() {
                   onClick={() => trackCTAClick('who-is-this-for', 'Get Your Free Audit')}
                   className="inline-block font-bold rounded-xl px-8 py-3 text-sm bg-[#D5EB4B] text-[#0c0c10] hover:brightness-110 transition-all"
                 >
-                  Get Your Free Audit
+                  I Qualify. Start My Audit
                 </a>
               </div>
             </motion.div>

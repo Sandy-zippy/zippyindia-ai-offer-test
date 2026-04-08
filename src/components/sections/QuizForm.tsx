@@ -536,7 +536,7 @@ export default function QuizForm() {
                       disabled={submitting}
                       className="flex-1 bg-[#D5EB4B] text-[#0c0c10] font-bold py-4 rounded-xl hover:brightness-110 transition-all disabled:opacity-60 cursor-pointer"
                     >
-                      {submitting ? 'Submitting...' : 'Get My Free Audit'}
+                      {submitting ? 'Submitting...' : 'Send Me My Roadmap'}
                     </button>
                   </>
                 ) : (

@@ -8,18 +8,21 @@ export default function MidPageCTA({ variant = 'pain' }: MidPageCTAProps) {
   const copy = {
     pain: {
       headline: 'Every day you wait, manual work costs you money.',
-      sub: 'Takes 2 minutes. No payment. No obligation.',
+      cta: 'See What You Can Save',
+      sub: 'Free audit. No payment. No obligation.',
     },
     process: {
-      headline: '2 weeks to live automations. Start with the quiz.',
-      sub: 'Free audit. Custom roadmap in 48 hours.',
+      headline: '2 weeks to live automations. Yours starts here.',
+      cta: 'Start My Audit',
+      sub: 'Custom roadmap delivered in 48 hours.',
     },
     roi: {
-      headline: 'Those savings are real. Claim your free audit.',
-      sub: '2-minute quiz. Results in 48 hours.',
+      headline: 'Those savings are waiting. Are you?',
+      cta: 'Claim My Savings Report',
+      sub: 'Free for 10 businesses this quarter.',
     },
   }
-  const { headline, sub } = copy[variant]
+  const { headline, cta, sub } = copy[variant]
 
   return (
     <div className="bg-[#2A2A35] py-10 px-4">
@@ -29,10 +32,10 @@ export default function MidPageCTA({ variant = 'pain' }: MidPageCTAProps) {
         </p>
         <a
           href="#quiz"
-          onClick={() => trackCTAClick('mid-page-cta', 'Get Your Free Audit')}
+          onClick={() => trackCTAClick('mid-page-cta', cta)}
           className="inline-block font-bold rounded-xl px-8 py-4 text-base bg-[#D5EB4B] text-[#0c0c10] hover:brightness-110 transition-all"
         >
-          Get Your Free Audit
+          {cta}
         </a>
         <p className="text-[#6B7280] text-xs mt-3">{sub}</p>
       </div>

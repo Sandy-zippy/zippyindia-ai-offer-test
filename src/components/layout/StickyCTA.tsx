@@ -14,7 +14,7 @@ export default function StickyCTA({ isQuizVisible }: StickyCTAProps) {
         onClick={() => trackCTAClick('sticky-cta', 'Get Your Free Audit')}
         className="block w-full text-center rounded-lg bg-[#D5EB4B] py-3 text-sm font-semibold text-[#0c0c10] hover:bg-[#E4F57A] transition-colors"
       >
-        Get Your Free Audit
+        Free Automation Audit
       </a>
       <p className="text-center text-[#6B7280] text-xs mt-2">
         Free audit. Custom roadmap in 48 hours.

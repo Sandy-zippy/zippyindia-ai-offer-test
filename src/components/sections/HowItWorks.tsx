@@ -28,7 +28,7 @@ const steps = [
   },
   {
     num: 2,
-    title: 'Get Your Free Audit',
+    title: 'We Audit Your Operations',
     desc: 'We manually review your business and deliver a custom automation roadmap within 48 hours.',
   },
   {

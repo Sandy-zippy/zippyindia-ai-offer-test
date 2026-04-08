@@ -109,9 +109,9 @@ function HeroForm() {
   return (
     <form onSubmit={handleSubmit} className="bg-white border border-[#E5E7EB] shadow-xl rounded-2xl p-6">
       <h3 className="text-lg font-bold text-[#0A0A0F] mb-1" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-        Get Your Free Audit
+        Claim Your Free Automation Audit
       </h3>
-      <p className="text-sm text-[#6B7280] mb-5">Takes 30 seconds. Custom roadmap in 48 hours.</p>
+      <p className="text-sm text-[#6B7280] mb-5">30 seconds. Custom roadmap on WhatsApp in 48 hours.</p>
       <div className="flex flex-col gap-3">
         <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name"
           className="w-full bg-white border border-[#E5E7EB] rounded-lg px-4 py-3 text-[#0A0A0F] text-sm placeholder:text-[#9CA3AF] focus:border-[#B8CF2E] focus:ring-1 focus:ring-[#B8CF2E] outline-none transition-colors" />
@@ -132,7 +132,7 @@ function HeroForm() {
       {formError && <p className="mt-2 text-sm text-[#EF4444]">{formError}</p>}
       <button type="submit" disabled={submitting}
         className="w-full mt-4 bg-[#D5EB4B] text-[#0c0c10] font-bold py-3.5 rounded-xl hover:brightness-110 transition-all disabled:opacity-60 cursor-pointer text-base">
-        {submitting ? 'Submitting...' : 'Get My Free Audit'}
+        {submitting ? 'Submitting...' : 'Start My Free Audit'}
       </button>
       <p className="text-center text-xs text-[#6B7280] mt-3">No payment. No obligation. No spam.</p>
     </form>
