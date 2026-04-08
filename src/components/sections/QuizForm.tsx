@@ -325,7 +325,7 @@ function ThankYou({ waitlistNum }: { waitlistNum: number }) {
             <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#D5EB4B] text-[#0c0c10] font-bold flex items-center justify-center text-sm">2</span>
             <div>
               <p className="text-sm font-medium text-[#0A0A0F]">We audit your operations</p>
-              <p className="text-xs text-[#6B7280]">Manual review by our team within 24 hours</p>
+              <p className="text-xs text-[#6B7280]">Manual review by our team within 48 hours</p>
             </div>
           </div>
           <div className="flex gap-3">

@@ -46,9 +46,32 @@ function getHeadline(): { main: string; sub: string } {
   }
 }
 
-/* ── Hero Form (above the fold) ──────────────────── */
+/* ── Hero Form (above the fold) — 3 phases: contact → qualify → done ── */
+
+const automationOptions = [
+  'Complete Lead Flow',
+  'Invoice & Payment Processing',
+  'Report Generation',
+  'Email & WhatsApp Follow-ups',
+  'Customer Retention',
+  'AI Voice + Chat + Booking',
+  'Inventory & Orders',
+  'HR & Payroll',
+  'Other',
+]
+
+const industryOptions = [
+  'Manufacturing', 'IT/Software', 'Healthcare', 'Education',
+  'Real Estate', 'Retail/E-commerce', 'Professional Services',
+  'Construction', 'Hospitality', 'Other',
+]
+
+const API_URL = 'https://script.google.com/macros/s/AKfycbzzacqtwW_Wfk3EB-4WmCQrNFK92yeT2ziRNJvV4Ujy_468HHwCRHiGN0OkxTMLZyKJKQ/exec'
 
 function HeroForm() {
+  const [phase, setPhase] = useState<'contact' | 'qualify' | 'done'>('contact')
+
+  // Contact fields
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
@@ -56,17 +79,25 @@ function HeroForm() {
   const [whatsappConsent, setWhatsappConsent] = useState(true)
   const [formError, setFormError] = useState('')
   const [submitting, setSubmitting] = useState(false)
-  const [done, setDone] = useState(false)
+
+  // Qualify fields
+  const [selected, setSelected] = useState<string[]>([])
+  const [industry, setIndustry] = useState('')
+  const [qualifySubmitting, setQualifySubmitting] = useState(false)
 
   const validatePhone = (raw: string) => /^[6-9]\d{9}$/.test(raw.replace(/[\s\-+]/g, '').replace(/^91/, ''))
   const cleanPhone = (raw: string) => raw.replace(/[\s\-+]/g, '').replace(/^91/, '')
 
-  async function handleSubmit(e: React.FormEvent) {
+  function toggleOption(opt: string) {
+    setSelected(prev => prev.includes(opt) ? prev.filter(o => o !== opt) : [...prev, opt])
+  }
+
+  async function handleContactSubmit(e: React.FormEvent) {
     e.preventDefault()
     setFormError('')
     if (!name.trim()) { setFormError('Name is required'); return }
     if (!phone.trim() || !validatePhone(phone)) { setFormError('Valid 10-digit mobile number required'); return }
-    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { setFormError('Valid email address required'); return }
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { setFormError('Valid email required'); return }
     if (!businessName.trim()) { setFormError('Business name is required'); return }
     setSubmitting(true)
 
@@ -80,36 +111,93 @@ function HeroForm() {
     }
 
     try { localStorage.setItem(`zippy_lead_${Date.now()}`, JSON.stringify(payload)) } catch {}
-
-    const url = 'https://script.google.com/macros/s/AKfycbzzacqtwW_Wfk3EB-4WmCQrNFK92yeT2ziRNJvV4Ujy_468HHwCRHiGN0OkxTMLZyKJKQ/exec'
-    try {
-      await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-    } catch {
-      try { navigator.sendBeacon(url, new Blob([JSON.stringify(payload)], { type: 'application/json' })) } catch {}
-    }
+    try { await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }) }
+    catch { try { navigator.sendBeacon(API_URL, new Blob([JSON.stringify(payload)], { type: 'application/json' })) } catch {} }
 
     trackCTAClick('hero-form', 'Start My Free Audit')
-    // Fire Meta Pixel Lead event for hero form conversions
     window.fbq?.('track', 'Lead', { content_name: 'Hero Form', content_category: 'hero_submission' })
     setSubmitting(false)
-    setDone(true)
+    setPhase('qualify')
   }
 
-  if (done) {
+  async function handleQualifySubmit() {
+    setQualifySubmitting(true)
+    const enrichPayload = {
+      phone: cleanPhone(phone), automate_areas: selected.join(', '), industry,
+      source: 'hero-form-v5-enrich', event_id: `enrich_${Date.now()}`,
+    }
+    try { await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(enrichPayload) }) } catch {}
+    setQualifySubmitting(false)
+    setPhase('done')
+  }
+
+  // Phase 3: Done
+  if (phase === 'done') {
     return (
       <div className="bg-white border border-[#E5E7EB] shadow-xl rounded-2xl p-6 text-center">
         <div className="w-12 h-12 rounded-full bg-[#D5EB4B] flex items-center justify-center mx-auto mb-4">
           <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M8 16L14 22L24 10" stroke="#0c0c10" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </div>
         <h3 className="text-xl font-bold text-[#0A0A0F] mb-2">You're in!</h3>
-        <p className="text-sm text-[#6B7280]">Check your WhatsApp. We'll send your audit within 48 hours.</p>
-        <a href="#quiz" className="inline-block mt-4 text-sm text-[#B8CF2E] hover:underline">Help us customize your audit below</a>
+        <p className="text-sm text-[#6B7280]">Check your WhatsApp. Custom roadmap within 48 hours.</p>
       </div>
     )
   }
 
+  // Phase 2: Qualify (inline, right here in hero)
+  if (phase === 'qualify') {
+    return (
+      <div className="bg-white border border-[#E5E7EB] shadow-xl rounded-2xl p-6">
+        {/* Success banner */}
+        <div className="flex items-center gap-2 mb-5 p-3 rounded-xl bg-[rgba(213,235,75,0.1)] border border-[#D5EB4B]/30">
+          <div className="w-5 h-5 rounded-full bg-[#D5EB4B] flex items-center justify-center flex-shrink-0">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="#0c0c10" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </div>
+          <p className="text-sm text-[#0A0A0F] font-medium">Audit requested! Help us customize it.</p>
+        </div>
+
+        {/* Task selection */}
+        <p className="text-sm font-semibold text-[#0A0A0F] mb-3">What eats the most time?</p>
+        <div className="grid grid-cols-2 gap-2 mb-4">
+          {automationOptions.map(opt => {
+            const active = selected.includes(opt)
+            return (
+              <button key={opt} type="button" onClick={() => toggleOption(opt)}
+                className={`text-left rounded-lg p-2.5 border text-xs cursor-pointer transition-all ${
+                  active ? 'border-[#B8CF2E] bg-[rgba(213,235,75,0.05)]' : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
+                }`}>
+                <span className="text-[#0A0A0F]">{opt}</span>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Industry */}
+        <p className="text-sm font-semibold text-[#0A0A0F] mb-2">Industry</p>
+        <select value={industry} onChange={e => setIndustry(e.target.value)}
+          className="w-full bg-white border border-[#E5E7EB] rounded-lg px-4 py-2.5 text-[#0A0A0F] text-sm focus:border-[#B8CF2E] outline-none mb-4">
+          <option value="">Select industry</option>
+          {industryOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+        </select>
+
+        {/* Actions */}
+        <div className="flex items-center justify-between">
+          <button type="button" onClick={() => setPhase('done')}
+            className="text-xs text-[#6B7280] hover:text-[#0A0A0F] cursor-pointer bg-transparent border-none">
+            Skip for now
+          </button>
+          <button type="button" onClick={handleQualifySubmit} disabled={qualifySubmitting}
+            className="bg-[#D5EB4B] text-[#0c0c10] font-bold px-6 py-2.5 rounded-xl text-sm hover:brightness-110 transition-all disabled:opacity-60 cursor-pointer">
+            {qualifySubmitting ? 'Sending...' : 'Submit'}
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Phase 1: Contact form
   return (
-    <form onSubmit={handleSubmit} className="bg-white border border-[#E5E7EB] shadow-xl rounded-2xl p-6">
+    <form onSubmit={handleContactSubmit} className="bg-white border border-[#E5E7EB] shadow-xl rounded-2xl p-6">
       <h3 className="text-lg font-bold text-[#0A0A0F] mb-1" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
         Claim Your Free Automation Audit
       </h3>
