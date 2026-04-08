@@ -43,7 +43,7 @@ function cleanPhone(raw: string): string {
   return raw.replace(/[\s\-+]/g, '').replace(/^91/, '')
 }
 
-async function getWaitlistNumber(): Promise<number> {
+function getWaitlistNumber(): number {
   try {
     const key = 'zippy_waitlist_counter'
     const current = parseInt(localStorage.getItem(key) || '11', 10)
@@ -420,8 +420,7 @@ export default function QuizForm() {
 
     trackQuizSubmit({ lead_source: 'automation-lp-v5', event_id: payload.event_id, step: 'contact' })
     trackQuizProgress(1, { step_name: 'contact_captured' })
-    const num = await getWaitlistNumber()
-    setWaitlistNum(num)
+    setWaitlistNum(getWaitlistNumber())
     window.dispatchEvent(new Event('waitlist-updated'))
     setSubmitting(false)
     setDirection(1)

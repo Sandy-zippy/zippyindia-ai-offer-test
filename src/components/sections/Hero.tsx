@@ -168,10 +168,10 @@ function HeroForm() {
             const active = selected.includes(opt)
             return (
               <button key={opt} type="button" onClick={() => toggleOption(opt)}
-                className={`text-left rounded-lg p-2.5 border text-xs cursor-pointer transition-all ${
-                  active ? 'border-[#B8CF2E] bg-[rgba(213,235,75,0.05)]' : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
+                className={`text-left rounded-lg p-2.5 border-2 text-xs cursor-pointer transition-all ${
+                  active ? 'border-[#B8CF2E] bg-[#D5EB4B]/20 font-bold shadow-sm' : 'border-[#E5E7EB] bg-white hover:border-[#D1D5DB]'
                 }`}>
-                <span className="text-[#0A0A0F]">{opt}</span>
+                <span className={active ? 'text-[#0A0A0F] font-bold' : 'text-[#0A0A0F]'}>{active ? '✓ ' : ''}{opt}</span>
               </button>
             )
           })}
@@ -180,7 +180,7 @@ function HeroForm() {
         {/* Industry */}
         <p className="text-sm font-semibold text-[#0A0A0F] mb-2">Industry</p>
         <select value={industry} onChange={e => setIndustry(e.target.value)}
-          className="w-full bg-white border border-[#E5E7EB] rounded-lg px-4 py-2.5 text-[#0A0A0F] text-sm focus:border-[#B8CF2E] outline-none mb-4">
+          className={`w-full rounded-lg px-4 py-2.5 text-sm outline-none mb-4 border-2 transition-all ${industry ? 'bg-[#D5EB4B]/20 border-[#B8CF2E] font-bold text-[#0A0A0F]' : 'bg-white border-[#E5E7EB] text-[#0A0A0F]'}`}>
           <option value="">Select industry</option>
           {industryOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
         </select>
