@@ -112,8 +112,8 @@ function HeroForm() {
 
     try { localStorage.setItem(`zippy_lead_${Date.now()}`, JSON.stringify(payload)) } catch {}
 
-    // Fire API in background — don't wait for response
-    fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(() => {
+    // Fire API in background. Use no-cors + text/plain to avoid CORS redirect issues with Apps Script
+    fetch(API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) }).catch(() => {
       try { navigator.sendBeacon(API_URL, new Blob([JSON.stringify(payload)], { type: 'application/json' })) } catch {}
     })
 
@@ -131,7 +131,7 @@ function HeroForm() {
       phone: cleanPhone(phone), automate_areas: selected.join(', '), industry,
       source: 'hero-form-v5-enrich', event_id: `enrich_${Date.now()}`,
     }
-    fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(enrichPayload) }).catch(() => {})
+    fetch(API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(enrichPayload) }).catch(() => {})
     setQualifySubmitting(false)
     setPhase('done')
   }
