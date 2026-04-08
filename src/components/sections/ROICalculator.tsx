@@ -113,10 +113,10 @@ export default function ROICalculator() {
         employees,
         avgSalary,
         manualHours,
-        annualSavings,
+        pctPayrollSaved,
       })
     }, 2000)
-  }, [employees, avgSalary, manualHours, annualSavings])
+  }, [employees, avgSalary, manualHours, pctPayrollSaved])
 
   useEffect(() => {
     pushDataLayer()

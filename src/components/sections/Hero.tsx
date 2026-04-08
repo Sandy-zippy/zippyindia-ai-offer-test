@@ -131,7 +131,7 @@ function HeroForm() {
       phone: cleanPhone(phone), automate_areas: selected.join(', '), industry,
       source: 'hero-form-v5-enrich', event_id: `enrich_${Date.now()}`,
     }
-    try { await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(enrichPayload) }) } catch {}
+    fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(enrichPayload) }).catch(() => {})
     setQualifySubmitting(false)
     setPhase('done')
   }
