@@ -75,7 +75,7 @@ export default function App() {
   useEffect(() => { captureUTM() }, [])
 
   return (
-    <BrowserRouter basename="/zippyindia-ai-offer-test">
+    <BrowserRouter >
       <Routes>
         <Route path="/" element={<AutomationHome />} />
         <Route path="/growth-offer" element={<GrowthOffer />} />

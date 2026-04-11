@@ -420,6 +420,9 @@ export default function QuizForm() {
 
     trackQuizSubmit({ lead_source: 'automation-lp-v5', event_id: payload.event_id, step: 'contact' })
     trackQuizProgress(1, { step_name: 'contact_captured' })
+    // Mark as submitted so hero form shows done state too
+    try { localStorage.setItem('zippy_hero_submitted', 'true') } catch {}
+    try { localStorage.setItem('zippy_hero_phone', cleanPhone(phone)) } catch {}
     setWaitlistNum(getWaitlistNumber())
     window.dispatchEvent(new Event('waitlist-updated'))
     setSubmitting(false)

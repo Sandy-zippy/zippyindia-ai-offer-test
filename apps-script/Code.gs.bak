@@ -26,27 +26,12 @@ function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents)
     const config = getConfig()
-    const isEnrichment = (data.source || '').indexOf('-enrich') > -1
 
-    if (isEnrichment) {
-      // Step 2: Enrichment only — update contact custom fields, no new opportunity, no CAPI
-      const results = {}
-      try {
-        results.ghl = upsertGHLContact(data, 0, '', config, true)
-      } catch (err) {
-        results.ghl = { status: 'error', error: err.message }
-      }
-      return ContentService.createTextOutput(JSON.stringify({
-        success: true,
-        enrichment: true,
-        integrations: results,
-      })).setMimeType(ContentService.MimeType.JSON)
-    }
-
-    // Step 1: Full lead processing
+    // Score the lead
     const score = scoreLeads(data)
     const leadTag = score >= 70 ? 'hot-lead' : score >= 40 ? 'warm-lead' : 'cool-lead'
 
+    // Fire all integrations
     const results = {}
 
     // 1. Meta CAPI
@@ -56,9 +41,9 @@ function doPost(e) {
       results.capi = { status: 'error', error: err.message }
     }
 
-    // 2. GHL Contact Upsert + Opportunity
+    // 2. GHL Contact Upsert
     try {
-      results.ghl = upsertGHLContact(data, score, leadTag, config, false)
+      results.ghl = upsertGHLContact(data, score, leadTag, config)
     } catch (err) {
       results.ghl = { status: 'error', error: err.message }
     }
@@ -173,7 +158,7 @@ function sendMetaCAPI(data, score, leadTag, config) {
 
 // ── GHL Contact Upsert ──
 
-function upsertGHLContact(data, score, leadTag, config, enrichOnly) {
+function upsertGHLContact(data, score, leadTag, config) {
   const nameParts = (data.name || '').trim().split(' ')
   let phone = (data.phone || '').replace(/[^0-9]/g, '')
   if (phone.length === 10) phone = '+91' + phone
@@ -181,55 +166,34 @@ function upsertGHLContact(data, score, leadTag, config, enrichOnly) {
 
   const industryMap = { 'Manufacturing': 'Other', 'IT/Software': 'SaaS', 'Healthcare': 'Healthcare', 'Education': 'Education', 'Real Estate': 'Real Estate', 'Retail/E-commerce': 'D2C', 'Other': 'Other' }
 
-  // For enrichment: only update custom fields, don't overwrite tags/source
-  var tags = []
-  var customFields = []
+  const tags = [data.source || 'automation-lp-v5', 'audit-waitlist', leadTag]
+  if (data.industry) tags.push(data.industry.toLowerCase().replace(/[\s\/]+/g, '-'))
+  if (data.utm_source) tags.push('utm-' + data.utm_source)
+  if (data.utm_medium) tags.push('medium-' + data.utm_medium)
 
-  if (enrichOnly) {
-    // Only add industry tag and custom fields for the enrichment data
-    if (data.industry) {
-      tags.push(data.industry.toLowerCase().replace(/[\s\/]+/g, '-'))
-      customFields.push({ id: '1G1IrP5TC05vSCjuWIXl', field_value: industryMap[data.industry] || 'Other' })
-    }
-    if (data.automate_areas) customFields.push({ id: '3kFfjrcLQjoHsiXhRhOA', field_value: data.automate_areas })
-  } else {
-    // Full lead: set all tags and custom fields
-    tags = [data.source || 'automation-lp-v5', 'audit-waitlist', leadTag]
-    if (data.industry) tags.push(data.industry.toLowerCase().replace(/[\s\/]+/g, '-'))
-    if (data.utm_source) tags.push('utm-' + data.utm_source)
-    if (data.utm_medium) tags.push('medium-' + data.utm_medium)
+  const customFields = [
+    { id: 'i00K84Mmu7UH9uJ13UlR', field_value: score },
+    { id: 'U4lCawFkdTlKGUFMACdU', field_value: 'Website' },
+  ]
+  if (data.industry) customFields.push({ id: '1G1IrP5TC05vSCjuWIXl', field_value: industryMap[data.industry] || 'Other' })
+  if (data.automate_areas) customFields.push({ id: '3kFfjrcLQjoHsiXhRhOA', field_value: data.automate_areas })
+  customFields.push({ id: 'IcU2GqKV41bDHXcUcfEU', field_value: data.awareness || 'solution-aware' })
+  if (data.source) customFields.push({ id: 'r7eqW0tqsmOfDp1r6hj2', field_value: data.source })
+  const engagement = (parseInt(data.visit_count) || 1) > 2 ? 'Active' : 'Lead'
+  customFields.push({ id: 'ZogN3buTYDdnFxvrhwvD', field_value: engagement })
 
-    customFields = [
-      { id: 'i00K84Mmu7UH9uJ13UlR', field_value: score },
-      { id: 'U4lCawFkdTlKGUFMACdU', field_value: 'Website' },
-    ]
-    if (data.industry) customFields.push({ id: '1G1IrP5TC05vSCjuWIXl', field_value: industryMap[data.industry] || 'Other' })
-    if (data.automate_areas) customFields.push({ id: '3kFfjrcLQjoHsiXhRhOA', field_value: data.automate_areas })
-    customFields.push({ id: 'IcU2GqKV41bDHXcUcfEU', field_value: data.awareness || 'solution-aware' })
-    if (data.source) customFields.push({ id: 'r7eqW0tqsmOfDp1r6hj2', field_value: data.source })
-    var engagement = (parseInt(data.visit_count) || 1) > 2 ? 'Active' : 'Lead'
-    customFields.push({ id: 'ZogN3buTYDdnFxvrhwvD', field_value: engagement })
-  }
-
-  var contactPayload = {
+  const contactPayload = {
     locationId: config.GHL_LOCATION_ID,
+    firstName: nameParts[0] || '',
+    lastName: nameParts.slice(1).join(' ') || '',
     phone: phone,
+    email: (data.email || '').trim() || undefined,
+    companyName: data.business_name || '',
+    tags: tags,
+    source: data.source || 'automation-lp-v5',
     customFields: customFields,
+    assignedTo: config.GHL_BHARGAV_ID,
   }
-
-  // Only set these fields on initial lead, not enrichment
-  if (!enrichOnly) {
-    contactPayload.firstName = nameParts[0] || ''
-    contactPayload.lastName = nameParts.slice(1).join(' ') || ''
-    contactPayload.email = (data.email || '').trim() || undefined
-    contactPayload.companyName = data.business_name || ''
-    contactPayload.source = data.source || 'automation-lp-v5'
-    contactPayload.assignedTo = config.GHL_BHARGAV_ID
-  }
-
-  // For enrichment: add tags separately via tags API to avoid overwriting
-  // For initial lead: include tags in the upsert payload
-  if (!enrichOnly && tags.length > 0) contactPayload.tags = tags
 
   // Remove email if empty (GHL rejects empty string as invalid email)
   if (!contactPayload.email) delete contactPayload.email
@@ -251,24 +215,8 @@ function upsertGHLContact(data, score, leadTag, config, enrichOnly) {
   const result = JSON.parse(res.getContentText())
   var contactId = result.contact ? result.contact.id : null
 
-  // For enrichment: add industry tag via tags API (doesn't overwrite existing tags)
-  if (contactId && enrichOnly && tags.length > 0) {
-    try {
-      UrlFetchApp.fetch('https://services.leadconnectorhq.com/contacts/' + contactId + '/tags', {
-        method: 'post',
-        headers: {
-          'Authorization': 'Bearer ' + config.GHL_PIT,
-          'Version': '2021-07-28',
-          'Content-Type': 'application/json',
-        },
-        payload: JSON.stringify({ tags: tags }),
-        muteHttpExceptions: true,
-      })
-    } catch (e) { Logger.log('Tag add failed: ' + e.message) }
-  }
-
-  // Create opportunity in pipeline (skip for enrichment-only calls)
-  if (contactId && !enrichOnly) {
+  // Create opportunity in pipeline
+  if (contactId) {
     var oppPayload = {
       locationId: config.GHL_LOCATION_ID,
       pipelineId: 'aTzYNdImLeTlbuaGyUEw',

@@ -69,7 +69,9 @@ const industryOptions = [
 const API_URL = 'https://script.google.com/macros/s/AKfycbzzacqtwW_Wfk3EB-4WmCQrNFK92yeT2ziRNJvV4Ujy_468HHwCRHiGN0OkxTMLZyKJKQ/exec'
 
 function HeroForm() {
-  const [phase, setPhase] = useState<'contact' | 'qualify' | 'done'>('contact')
+  // If any form already submitted, start at done
+  const alreadySubmitted = typeof window !== 'undefined' && localStorage.getItem('zippy_hero_submitted') === 'true'
+  const [phase, setPhase] = useState<'contact' | 'qualify' | 'done'>(alreadySubmitted ? 'done' : 'contact')
 
   // Contact fields
   const [name, setName] = useState('')
