@@ -189,13 +189,10 @@ function HeroForm() {
 
         {/* Actions */}
         <div className="flex items-center justify-between">
-          <button type="button" onClick={() => setPhase('done')}
-            className="text-xs text-[#6B7280] hover:text-[#0A0A0F] cursor-pointer bg-transparent border-none">
-            Skip for now
-          </button>
-          <button type="button" onClick={handleQualifySubmit} disabled={qualifySubmitting}
+          <span />
+          <button type="button" onClick={handleQualifySubmit} disabled={qualifySubmitting || selected.length === 0 || !industry}
             className="bg-[#D5EB4B] text-[#0c0c10] font-bold px-6 py-2.5 rounded-xl text-sm hover:brightness-110 transition-all disabled:opacity-60 cursor-pointer">
-            {qualifySubmitting ? 'Sending...' : 'Submit'}
+            {qualifySubmitting ? 'Sending...' : 'Complete My Audit Request'}
           </button>
         </div>
       </div>

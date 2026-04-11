@@ -544,20 +544,14 @@ export default function QuizForm() {
                   </>
                 ) : (
                   <>
-                    <button
-                      type="button"
-                      onClick={skipQualify}
-                      className="text-sm text-[#6B7280] hover:text-[#0A0A0F] transition-colors cursor-pointer"
-                    >
-                      Skip for now
-                    </button>
+                    <span />
                     <button
                       type="button"
                       onClick={handleQualifySubmit}
-                      disabled={qualifySubmitting}
+                      disabled={qualifySubmitting || selected.length === 0 || !industry}
                       className="bg-[#D5EB4B] text-[#0c0c10] font-bold px-8 py-3 rounded-xl hover:brightness-110 transition-all disabled:opacity-60 cursor-pointer"
                     >
-                      {qualifySubmitting ? 'Submitting...' : 'Submit Details'}
+                      {qualifySubmitting ? 'Submitting...' : 'Complete My Audit Request'}
                     </button>
                   </>
                 )}
