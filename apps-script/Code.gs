@@ -70,6 +70,13 @@ function doPost(e) {
       results.sheets = { status: 'error', error: err.message }
     }
 
+    // 4. WhatsApp notifications to Sandy + Bhargav via GHL Conversations API
+    try {
+      results.whatsapp = sendTeamWhatsApp(data, score, leadTag, config)
+    } catch (err) {
+      results.whatsapp = { status: 'error', error: err.message }
+    }
+
     return ContentService.createTextOutput(JSON.stringify({
       success: true,
       score,
@@ -337,6 +344,85 @@ function backupToSheets(data, score, leadTag, config) {
 
   sheet.appendRow(row)
   return { status: 'ok' }
+}
+
+// ── WhatsApp Team Notifications via GHL Conversations API ──
+
+function sendTeamWhatsApp(data, score, leadTag, config) {
+  // Sandy's GHL contact ID and Bhargav's GHL contact ID
+  var SANDY_CONTACT_ID = '5xVmeOufYyIEHYoxCF8k'
+  var BHARGAV_CONTACT_ID = 'Z9YhvtDF06aSzN3wsZWD'
+
+  var leadName = data.name || 'Unknown'
+  var leadPhone = data.phone || 'N/A'
+  var leadEmail = data.email || 'N/A'
+  var leadCompany = data.business_name || 'N/A'
+  var leadIndustry = data.industry || 'N/A'
+  var leadAreas = data.automate_areas || 'N/A'
+
+  // Message to Sandy (full details)
+  var sandyMsg = 'New lead from zippyscale.in\n\n'
+    + 'Name: ' + leadName + '\n'
+    + 'Phone: ' + leadPhone + '\n'
+    + 'Email: ' + leadEmail + '\n'
+    + 'Company: ' + leadCompany + '\n'
+    + 'Industry: ' + leadIndustry + '\n'
+    + 'Problems: ' + leadAreas + '\n'
+    + 'Score: ' + score + ' (' + leadTag + ')\n'
+    + 'Source: ' + (data.source || 'N/A')
+
+  // Message to Bhargav (action-focused)
+  var bhargavMsg = 'New lead. Call now.\n\n'
+    + leadName + '\n'
+    + leadPhone + '\n'
+    + leadCompany + ' (' + leadIndustry + ')\n\n'
+    + 'Wants to automate: ' + leadAreas + '\n\n'
+    + 'Score: ' + score + '\n\n'
+    + 'Call within 1 hour.'
+
+  // Hot lead override
+  if (score >= 70) {
+    bhargavMsg = 'URGENT. Hot lead.\n\n'
+      + leadName + '\n'
+      + leadPhone + '\n'
+      + leadCompany + '\n\n'
+      + 'Score: ' + score + '\n\n'
+      + 'Call NOW. Not in 1 hour. NOW.'
+  }
+
+  var results = []
+  var headers = {
+    'Authorization': 'Bearer ' + config.GHL_PIT,
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+  }
+
+  // Send to Sandy
+  try {
+    var r1 = UrlFetchApp.fetch('https://services.leadconnectorhq.com/conversations/messages', {
+      method: 'post',
+      headers: headers,
+      payload: JSON.stringify({ type: 'WhatsApp', contactId: SANDY_CONTACT_ID, message: sandyMsg }),
+      muteHttpExceptions: true,
+    })
+    var code1 = r1.getResponseCode()
+    var body1 = r1.getContentText()
+    results.push({ to: 'sandy', status: (code1 === 200 || code1 === 201) ? 'sent' : 'error', code: code1 })
+  } catch (e) { results.push({ to: 'sandy', status: 'error', error: e.message }) }
+
+  // Send to Bhargav
+  try {
+    var r2 = UrlFetchApp.fetch('https://services.leadconnectorhq.com/conversations/messages', {
+      method: 'post',
+      headers: headers,
+      payload: JSON.stringify({ type: 'WhatsApp', contactId: BHARGAV_CONTACT_ID, message: bhargavMsg }),
+      muteHttpExceptions: true,
+    })
+    var code2 = r2.getResponseCode()
+    results.push({ to: 'bhargav', status: (code2 === 200 || code2 === 201) ? 'sent' : 'error', code: code2 })
+  } catch (e) { results.push({ to: 'bhargav', status: 'error', error: e.message }) }
+
+  return { status: 'ok', notifications: results }
 }
 
 // ── Utility: SHA256 hash ──
